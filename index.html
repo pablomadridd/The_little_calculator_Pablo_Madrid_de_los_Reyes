@@ -3,37 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Avanzada</title>
+    <title>Advanced Keyboard Calculator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="calculator">
-        <h1>Calculadora</h1>
-        <input type="text" id="inputField" placeholder="Ingresa un número o CSV" />
-        <div id="buttons">
-            <!-- Operaciones unarias -->
-            <button id="square" onclick="square()">Cuadrado</button>
-            <button id="modulo" onclick="mod()">Módulo</button>
-            <button id="factorial" onclick="fact()">Factorial</button>
+    <div class="calculator-container">
+        <!-- Informative field -->
+        <h2 id="info" class="info" title="Information about the operation">Start typing to calculate</h2>
 
-            <!-- Operaciones binarias -->
-            <button id="addition" onclick="setOperator('+')">+</button>
-            <button id="multiplication" onclick="setOperator('*')">*</button>
-            <button id="equals" onclick="eq()">=</button>
-
-            <!-- Operaciones CSV -->
-            <button id="sum" onclick="sum()">Suma CSV</button>
-            <button id="sort" onclick="sort()">Ordenar CSV</button>
-            <button id="reverse" onclick="reverse()">Invertir CSV</button>
-            <button id="removelast" onclick="removeLast()">Eliminar Último</button>
+        <!-- Calculator screen -->
+        <div class="screen-container">
+            <input type="text" id="screen" class="screen" disabled>
+            <div class="blinking-cursor">|</div>
         </div>
-
-        <!-- Campo informativo -->
-        <h2 id="info" class="big" title="Info sobre el número">Información sobre el número</h2>
-
-        <!-- Mensaje de error -->
-        <p id="error" class="error"></p>
     </div>
+
+    <!-- Script for the logic -->
     <script src="functions.js"></script>
 </body>
 </html>

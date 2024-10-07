@@ -1,77 +1,107 @@
-let currentOperator = '';
-let firstNumber = null;
+// State variables
+let currentInput = "";
+let previousInput = "";
+let operator = "";
 
-function setOperator(operator) {
-    currentOperator = operator;
-    firstNumber = parseFloat(document.getElementById("inputField").value);
-    document.getElementById("inputField").value = '';  // Limpia el campo para el segundo número
+// Get screen and info elements
+const screen = document.getElementById("screen");
+const infoField = document.getElementById("info");
+
+// Update screen function
+function updateScreen(value) {
+    screen.value = value;
 }
 
-function eq() {
-    const secondNumber = parseFloat(document.getElementById("inputField").value);
-    let result;
-    if (currentOperator === '+') {
-        result = firstNumber + secondNumber;
-    } else if (currentOperator === '*') {
-        result = firstNumber * secondNumber;
-    }
-    document.getElementById("inputField").value = result;
-    fill_info(result);
+// Update info function
+function updateInfo(message) {
+    infoField.textContent = message;
 }
 
-function square() {
-    const number = parseFloat(document.getElementById("inputField").value);
-    const result = number * number;
-    document.getElementById("inputField").value = result;
-    fill_info(result);
+// Clear screen and reset variables
+function clearScreen() {
+    currentInput = "";
+    previousInput = "";
+    operator = "";
+    updateScreen("");
+    updateInfo("Calculator cleared");
 }
 
-function mod() {
-    const number = parseFloat(document.getElementById("inputField").value);
-    const result = number < 0 ? -number : number;
-    document.getElementById("inputField").value = result;
-}
+// Perform calculation based on operator
+function calculate(prev, curr, op) {
+    const x = parseFloat(prev);
+    const y = parseFloat(curr);
 
-function fact() {
-    let number = parseInt(document.getElementById("inputField").value);
-    let result = 1;
-    for (let i = 1; i <= number; i++) {
-        result *= i;
-    }
-    document.getElementById("inputField").value = result;
-}
-
-function fill_info(result) {
-    const infoField = document.getElementById("info");
-    if (result < 100) {
-        infoField.textContent = "Info: The result is less than 100";
-    } else if (result >= 100 && result <= 200) {
-        infoField.textContent = "Info: The result is between 100 and 200";
-    } else {
-        infoField.textContent = "Info: The result is greater than 200";
+    switch (op) {
+        case "+":
+            return (x + y).toString();
+        case "-":
+            return (x - y).toString();
+        case "*":
+            return (x * y).toString();
+        case "/":
+            return (x / y).toString();
+        case "^":
+            return Math.pow(x, y).toString();
+        case "%":
+            return (x % y).toString();
+        default:
+            return curr;
     }
 }
 
-function sum() {
-    const values = document.getElementById("inputField").value.split(',').map(Number);
-    const total = values.reduce((acc, val) => acc + val, 0);
-    document.getElementById("inputField").value = total;
+// Factorial function
+function factorial(n) {
+    return n === 0 ? 1 : n * factorial(n - 1);
 }
 
-function sort() {
-    const values = document.getElementById("inputField").value.split(',').map(Number);
-    values.sort((a, b) => a - b);
-    document.getElementById("inputField").value = values.join(',');
-}
+// Handle keyboard input
+document.addEventListener("keydown", (e) => {
+    const key = e.key;
 
-function reverse() {
-    const values = document.getElementById("inputField").value.split(',').map(Number);
-    values.reverse();
-    document.getElementById("inputField").value = values.join(',');
-}
+    // Handle number input
+    if (!isNaN(key)) {
+        currentInput += key;
+        updateScreen(currentInput);
+    }
 
-function removeLast() {
-    const values = document.getElementById("inputField").value.split(',').map(Number);
-    values.pop();
-    document.getElementById("inputField").value = values.join(',');
-}
+    // Handle operators
+    if (["+", "-", "*", "/", "^", "%"].includes(key)) {
+        previousInput = currentInput;
+        operator = key;
+        currentInput = "";
+        updateInfo(`Operator selected: ${key}`);
+    }
+
+    // Handle square root
+    if (key === "r") {
+        currentInput = Math.sqrt(parseFloat(currentInput)).toString();
+        updateScreen(currentInput);
+        updateInfo(`Square root calculated: ${currentInput}`);
+    }
+
+    // Handle factorial
+    if (key === "!") {
+        currentInput = factorial(parseInt(currentInput)).toString();
+        updateScreen(currentInput);
+        updateInfo(`Factorial: ${currentInput}`);
+    }
+
+    // Handle clear (Escape key)
+    if (key === "Escape") {
+        clearScreen();
+    }
+
+    // Handle equal (Enter key)
+    if (key === "Enter") {
+        currentInput = calculate(previousInput, currentInput, operator);
+        updateScreen(currentInput);
+        updateInfo(`Result: ${currentInput}`);
+    }
+
+    // Handle backspace (delete last character)
+    if (key === "Backspace") {
+        currentInput = currentInput.slice(0, -1);
+        updateScreen(currentInput);
+    }
+});
+
