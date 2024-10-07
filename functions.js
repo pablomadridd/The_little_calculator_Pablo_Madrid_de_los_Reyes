@@ -29,6 +29,13 @@ function calculate() {
         let secondNumber = parseFloat(currentInput);
         let result = 0;
 
+        // Manejo de errores para división por cero
+        if (operator === '/' && secondNumber === 0) {
+            alert("Error: División por cero no permitida.");
+            clearCurrentInput();
+            return;
+        }
+
         switch (operator) {
             case '+':
                 result = firstNumber + secondNumber;
@@ -69,95 +76,111 @@ function handleCSVOperation(operation) {
     let input = currentInput;
     if (input) {
         let csvValues = input.split(',').map(Number);
+        
+        // Validar valores CSV
+        if (csvValues.some(isNaN)) {
+            alert("Error: Todos los valores deben ser números válidos.");
+            clearCurrentInput();
+            return;
+        }
 
         switch (operation) {
             case 'sum':
                 let sum = csvValues.reduce((acc, val) => acc + val, 0);
-                alert(`Suma: ${sum}`);
+                currentInput = sum.toString(); // Mostrar el resultado en el input
+                updateInput();
                 break;
             case 'sort':
                 csvValues.sort((a, b) => a - b);
-                alert(`Valores ordenados: ${csvValues.join(', ')}`);
+                currentInput = csvValues.join(', '); // Mostrar los valores ordenados en el input
+                updateInput();
                 break;
             case 'reverse':
                 csvValues.reverse();
-                alert(`Valores revertidos: ${csvValues.join(', ')}`);
+                currentInput = csvValues.join(', '); // Mostrar los valores revertidos en el input
+                updateInput();
                 break;
             case 'removelast':
                 csvValues.pop();
-                alert(`Valores después de eliminar el último: ${csvValues.join(', ')}`);
+                currentInput = csvValues.join(', '); // Mostrar los valores después de eliminar el último
+                updateInput();
                 break;
         }
-        currentInput = csvValues.join(', ');
-        updateInput();
+    } else {
+        alert("Error: Ingresa valores CSV primero.");
     }
 }
 
-// Función para establecer operador
-function setOperator(op) {
-    operator = op;
-    firstNumber = parseFloat(currentInput);
-    currentInput = '';
-    updateInput();
-}
-
-// Función para calcular factorial
+// Funciones de operaciones adicionales
 document.getElementById('factorial').addEventListener('click', () => {
     let num = parseInt(currentInput);
-    if (num < 0) {
-        alert("No se puede calcular el factorial de un número negativo.");
+    if (isNaN(num) || num < 0) {
+        alert("Error: Debe ingresar un número entero no negativo.");
+        clearCurrentInput();
         return;
     }
-    let factorial = 1;
-    for (let i = 1; i <= num; i++) {
-        factorial *= i;
-    }
-    currentInput = factorial.toString();
+    let fact = factorial(num);
+    currentInput = fact.toString(); // Mostrar el resultado en el input
     updateInput();
-    fillInfo(factorial);
 });
 
-// Función para calcular módulo
 document.getElementById('modulo').addEventListener('click', () => {
-    let numbers = currentInput.split(',');
-    if (numbers.length !== 2) {
-        alert("Por favor, ingresa dos números separados por coma para calcular el módulo.");
-        return;
-    }
-    let num1 = parseFloat(numbers[0]);
-    let num2 = parseFloat(numbers[1]);
-    let result = num1 % num2;
-    currentInput = result.toString();
+    let num = parseFloat(currentInput);
+    let mod = num % 2; // Módulo 2
+    currentInput = mod.toString(); // Mostrar el resultado en el input
     updateInput();
-    fillInfo(result);
 });
 
-// Función para elevar al cuadrado
 document.getElementById('square').addEventListener('click', () => {
     let num = parseFloat(currentInput);
-    let result = num * num;
-    currentInput = result.toString();
+    let square = num * num;
+    currentInput = square.toString(); // Mostrar el resultado en el input
     updateInput();
-    fillInfo(result);
 });
 
-// Función para calcular raíz cuadrada
 document.getElementById('sqrt').addEventListener('click', () => {
     let num = parseFloat(currentInput);
-    let result = Math.sqrt(num);
-    currentInput = result.toString();
+    if (num < 0) {
+        alert("Error: No se puede calcular la raíz cuadrada de un número negativo.");
+        clearCurrentInput();
+        return;
+    }
+    let sqrt = Math.sqrt(num);
+    currentInput = sqrt.toString(); // Mostrar el resultado en el input
     updateInput();
-    fillInfo(result);
 });
 
-// Función para mostrar resultados en info
-function fillInfo(result) {
-    document.getElementById('info').textContent = `Resultado: ${result}`;
-}
-
-// Limpiar entrada al enfocar
-function clearInput() {
+// Funciones auxiliares
+function setOperator(op) {
+    firstNumber = parseFloat(currentInput);
+    operator = op;
     currentInput = '';
     updateInput();
-    document.getElementById('info').textContent = '';
 }
+
+function factorial(num) {
+    if (num === 0 || num === 1) return 1;
+    return num * factorial(num - 1);
+}
+
+function fillInfo(result) {
+    document.getElementById('info').innerText = `Resultado: ${result}`;
+}
+
+function clearCurrentInput() {
+    currentInput = '';
+    updateInput();
+}
+
+function clearInput() {
+    document.getElementById('input').value = '';
+}
+
+// NUEVA FUNCIÓN: Limpiar la pantalla y el historial al hacer clic en el campo de entrada
+document.getElementById('input').addEventListener('click', () => {
+    currentInput = '';
+    firstNumber = null;
+    operator = '';
+    updateInput();
+    document.getElementById('info').innerText = '';  // Limpiar el historial
+});
