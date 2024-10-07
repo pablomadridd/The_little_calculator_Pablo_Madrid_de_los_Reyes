@@ -1,24 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Keyboard Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <title>Calculadora Web</title>
 </head>
 <body>
-    <div class="calculator-container">
-        <!-- Informative field -->
-        <h2 id="info" class="info" title="Information about the operation">Start typing to calculate</h2>
-
-        <!-- Calculator screen -->
-        <div class="screen-container">
-            <input type="text" id="screen" class="screen" disabled>
-            <div class="blinking-cursor">|</div>
+    <div class="calculator">
+        <h1>Calculadora Web</h1>
+        <input type="text" id="input" placeholder="Introduce un número" readonly>
+        <div class="buttons">
+            <button id="square">Cuadrado</button>
+            <button id="modulo">Módulo</button>
+            <button id="factorial">Factorial</button>
+            <button id="addition">Suma</button>
+            <button id="multiplication">Multiplicación</button>
+            <button id="division">División</button>
+            <button id="equal">=</button>
         </div>
+        <h2 id="info" class="big" title="Info about the number">Información sobre el número</h2>
     </div>
-
-    <!-- Script for the logic -->
     <script src="functions.js"></script>
 </body>
 </html>
