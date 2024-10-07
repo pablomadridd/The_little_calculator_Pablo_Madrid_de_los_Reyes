@@ -3,23 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Avanzada</title>
     <link rel="stylesheet" href="styles.css">
-    <title>Calculadora Web</title>
 </head>
 <body>
     <div class="calculator">
-        <h1>Calculadora Web</h1>
-        <input type="text" id="input" placeholder="Introduce un número" readonly>
-        <div class="buttons">
-            <button id="square">Cuadrado</button>
-            <button id="modulo">Módulo</button>
-            <button id="factorial">Factorial</button>
-            <button id="addition">Suma</button>
-            <button id="multiplication">Multiplicación</button>
-            <button id="division">División</button>
-            <button id="equal">=</button>
+        <input type="text" id="input" placeholder="Ingresa números o valores CSV" onfocus="clearInput()" readonly aria-label="Campo de entrada">
+        <div id="info"></div>
+        <div class="button-container">
+            <button id="factorial" aria-label="Calcular factorial">Factorial</button>
+            <button id="modulo" aria-label="Calcular módulo">Módulo</button>
+            <button id="square" aria-label="Elevar al cuadrado">Elevación al cuadrado</button>
+            <button id="sqrt" aria-label="Calcular raíz cuadrada">Raíz cuadrada</button>
         </div>
-        <h2 id="info" class="big" title="Info about the number">Información sobre el número</h2>
+        <div class="button-container">
+            <button id="addition" aria-label="Suma">+</button>
+            <button id="subtraction" aria-label="Resta">-</button>
+            <button id="division" aria-label="División">/</button>
+            <button id="multiplication" aria-label="Multiplicación">x</button>
+            <button id="equal" aria-label="Calcular resultado">=</button>
+        </div>
+        <div class="button-container">
+            <button id="sum" aria-label="Sumar valores CSV">Sumar CSV</button>
+            <button id="sort" aria-label="Ordenar valores CSV">Ordenar CSV</button>
+            <button id="reverse" aria-label="Revertir valores CSV">Revertir CSV</button>
+            <button id="removelast" aria-label="Eliminar último valor CSV">Eliminar Último CSV</button>
+        </div>
     </div>
     <script src="functions.js"></script>
 </body>

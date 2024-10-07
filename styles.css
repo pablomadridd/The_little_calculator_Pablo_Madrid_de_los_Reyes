@@ -1,57 +1,77 @@
+/* Estilos globales */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #f4f4f9; /* Color de fondo suave */
     margin: 0;
 }
 
+/* Estilos de la calculadora */
 .calculator {
-    background-color: white;
+    background-color: #ffffff; /* Fondo blanco */
     padding: 20px;
-    border: 2px solid black;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: none; /* Sin borde */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
     text-align: center;
+    max-width: 400px; /* Aumento del ancho máximo */
+    width: 100%; /* Para que ocupe el espacio disponible */
 }
 
+/* Estilos del input */
 input {
-    margin-bottom: 10px;
-    padding: 10px;
-    width: 200px;
-    font-size: 1.2em;
-    border: 1px solid black;
-    border-radius: 5px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background-color: #e9e9e9;
+    margin-bottom: 15px;
+    padding: 15px; /* Mantener el padding para el input */
+    width: calc(100% - 30px); /* Ajustar el ancho para que tenga la misma distancia de los bordes */
+    font-size: 1.5em; /* Tamaño de fuente más grande */
+    border: none; /* Sin borde */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra interna suave */
+    background-color: #e7e7e7; /* Fondo gris claro */
+    transition: background-color 0.3s; /* Transición de color de fondo */
 }
 
-.buttons {
+/* Cambiar color del input al enfocarse */
+input:focus {
+    background-color: #ffffff; /* Fondo blanco al enfocar */
+    outline: none; /* Sin contorno */
+}
+
+/* Contenedor de botones */
+.button-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: wrap; /* Permite que los botones se ajusten a la fila */
+    justify-content: center; /* Centrar los botones */
+    margin: 10px 0; /* Margen vertical entre contenedores */
 }
 
+/* Estilos de los botones */
 button {
     margin: 5px;
     padding: 15px;
     cursor: pointer;
-    background-color: #cccccc;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    font-size: 1em;
-    transition: all 0.2s ease;
+    background-color: #6200ea; /* Color de fondo atractivo */
+    color: #ffffff; /* Texto blanco */
+    border: none; /* Sin borde */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    font-size: 1.1em; /* Tamaño de fuente ligeramente mayor */
+    transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
+    flex: 1 1 100px; /* Botones flexibles que crecen según el espacio disponible */
 }
 
+/* Efecto hover para los botones */
 button:hover {
-    background-color: #b3b3b3;
-    transform: translateY(-2px);
+    background-color: #3700b3; /* Color más oscuro al pasar el mouse */
+    transform: translateY(-3px); /* Mover hacia arriba */
 }
 
-.big {
-    font-size: 1.5em;
-    margin-top: 20px;
+/* Estilo para el texto de resultados */
+#info {
+    margin-top: 10px;
+    font-size: 1.2em; /* Tamaño de fuente del resultado */
+    color: #333; /* Color de texto oscuro */
 }
