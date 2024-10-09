@@ -5,9 +5,16 @@ let firstNumber = null;
 
 // Manejar entrada de teclado
 document.addEventListener('keydown', (event) => {
+    // Permitir números, punto decimal y coma
     if (!isNaN(event.key) || event.key === '.' || event.key === ',') {
         appendToInput(event.key);
-    } else if (event.key === 'Enter') {
+    } 
+    // Permitir el signo negativo solo si el campo de entrada está vacío o si el último carácter es una operación
+    else if (event.key === '-' && (currentInput === '' || ['+', '-', 'x', '/'].includes(currentInput.slice(-1)))) {
+        appendToInput(event.key);
+    }
+    // Manejar la tecla Enter
+    else if (event.key === 'Enter') {
         calculate();
     }
 });
@@ -62,25 +69,7 @@ document.getElementById('subtraction').addEventListener('click', () => setOperat
 document.getElementById('division').addEventListener('click', () => setOperator('/'));
 document.getElementById('multiplication').addEventListener('click', () => setOperator('x'));
 document.getElementById('equal').addEventListener('click', calculate);
-document.getElementById('modulo').addEventListener('click', () => {
-    if (operator && firstNumber !== null) {
-        let secondNumber = parseFloat(currentInput);
-        
-        // Validar si el segundo número es válido y no es cero
-        if (secondNumber === 0) {
-            alert("Error: Division by zero is not allowed in modulo.");
-            clearCurrentInput();
-            return;
-        }
-
-        let result = firstNumber % secondNumber; // Operación de módulo
-        currentInput = result.toString(); // Mostrar el resultado
-        updateInput();
-        fillInfo(result);
-    } else {
-        alert("Error: Enter valid numbers to use modulo.");
-    }
-});
+document.getElementById('modulo').addEventListener('click', mod);
 
 // Botón para cambiar signo
 document.getElementById('sign').addEventListener('click', () => {
@@ -144,10 +133,10 @@ function handleCSVOperation(operation) {
 
 // Funciones adicionales
 function setOperator(op) {
-    firstNumber = parseFloat(currentInput);
-    operator = op;
-    currentInput = '';
-    updateInput();
+    firstNumber = parseFloat(currentInput); // Establece el primer número
+    operator = op; // Establece el operador
+    currentInput = ''; // Limpia la entrada actual para el siguiente número
+    updateInput(); // Actualiza la pantalla de entrada
 }
 
 function fillInfo(result) {
@@ -187,15 +176,22 @@ document.getElementById('factorial').addEventListener('click', () => {
 });
 
 // Función para calcular el módulo (resto)
-document.getElementById('modulo').addEventListener('click', () => {
-    if (operator && firstNumber !== null) {
-        let secondNumber = parseFloat(currentInput);
-        let result = firstNumber % secondNumber;
-        currentInput = result.toString();
-        updateInput();
-        fillInfo(result);
+document.getElementById('modulo').addEventListener('click', mod);
+
+// Función para calcular el módulo (resto)
+function mod() {
+    let num = parseFloat(currentInput); // Obtener el número ingresado
+
+    if (isNaN(num)) { // Validar que sea un número
+        alert("Error: Please enter a valid number.");
+        clearCurrentInput();
+        return;
     }
-});
+
+    // Retornar -X si es negativo, o dejarlo igual si es positivo
+    currentInput = num < 0 ? -num : num; 
+    updateInput(); // Actualiza el input con el resultado
+}
 
 // Función para calcular el cuadrado de un número
 document.getElementById('square').addEventListener('click', () => {
@@ -234,4 +230,3 @@ document.getElementById('input').addEventListener('click', () => {
     updateInput();
     document.getElementById('info').textContent = '';
 });
-
