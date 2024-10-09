@@ -16,7 +16,9 @@
         readonly
         aria-label="Input field"
       />
-      <div id="info"></div>
+      
+      <h2 id="info" class="big" title="Info about the number">Information about the number</h2>
+      
       <div class="button-container">
         <button id="factorial" aria-label="Calculate factorial">Factorial</button>
         <button id="modulo" aria-label="Calcular módulo">Módulo</button>
@@ -36,8 +38,20 @@
         <button id="sort" aria-label="Sort CSV values">Sort CSV</button>
         <button id="reverse" aria-label="Reverse CSV values">Reverse CSV</button>
         <button id="removelast" aria-label="Remove last CSV value">Remove Last CSV</button>
+        <button id="power" aria-label="Raise to power">x<sup>y</sup></button> <!-- Botón para elevar a potencia -->
       </div>
     </div>
+
+    <!-- Popup para elevar a potencia -->
+    <div id="powerPopup" class="popup">
+      <div class="popup-content">
+        <span class="close" id="closePopup">&times;</span>
+        <h3>Raise to Power</h3>
+        <input type="number" id="exponentInput" placeholder="Enter exponent" />
+        <button id="calculatePower">Go!</button>
+      </div>
+    </div>
+
     <script src="functions.js"></script>
   </body>
 </html>

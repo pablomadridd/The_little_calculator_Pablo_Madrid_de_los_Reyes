@@ -130,132 +130,80 @@ function handleCSVOperation(operation) {
                 updateInformativeField("Operation: Sorted CSV values.");
                 break;
             case 'reverse':
-                csvValues.reverse();
-                currentInput = csvValues.join(', ');
+                currentInput = csvValues.reverse().join(', ');
                 updateInformativeField("Operation: Reversed CSV values.");
                 break;
             case 'removelast':
                 csvValues.pop();
                 currentInput = csvValues.join(', ');
-                updateInformativeField("Operation: Last value removed from CSV.");
+                updateInformativeField("Operation: Removed last CSV value.");
                 break;
         }
+
         updateInput();
     } else {
-        notifyError("Error: Enter CSV values.");
+        notifyError("Error: Please enter valid CSV values.");
     }
 }
 
-// Funciones adicionales
-function setOperator(op) {
-    firstNumber = parseFloat(currentInput); // Establece el primer número
-    operator = op; // Establece el operador
-    currentInput = ''; // Limpia la entrada actual para el siguiente número
-    updateInput(); // Actualiza la pantalla de entrada
-}
-
-function fillInfo(result) {
-    document.getElementById('info').textContent = `Result: ${result}`;
-}
-
-// Limpia la entrada actual
-function clearCurrentInput() {
-    currentInput = '';
-    updateInput();
-    document.getElementById('info').textContent = '';
-}
-
-// Limpia el input cuando se enfoca
-function clearInput() {
-    document.getElementById('input').value = '';
-}
-
-// Función para calcular el factorial
-document.getElementById('factorial').addEventListener('click', () => {
-    if (currentInput && !currentInput.includes(',')) {
-        const number = parseInt(currentInput, 10);
-        if (number >= 0) {
-            let factorial = 1;
-            for (let i = 2; i <= number; i++) {
-                factorial *= i;
-            }
-            currentInput = factorial.toString();
-            updateInput();
-            fillInfo(factorial);
-        } else {
-            notifyError('Error: Factorial only applies to non-negative integers.');
-        }
-    } else {
-        notifyError('Error: Factorial does not apply to CSV values.');
-    }
-});
-
-// Función para calcular el módulo (resto)
-document.getElementById('modulo').addEventListener('click', mod);
-
-// Función para calcular el módulo (resto)
+// Función para calcular el módulo
 function mod() {
-    let num = parseFloat(currentInput); // Obtener el número ingresado
-
-    if (isNaN(num)) { // Validar que sea un número
-        notifyError("Error: Please enter a valid number.");
-        clearCurrentInput();
-        return;
-    }
-
-    // Retornar -X si es negativo, o dejarlo igual si es positivo
-    currentInput = num < 0 ? -num : num; 
-    updateInput(); // Actualiza el input con el resultado
-}
-
-// Función para calcular el cuadrado de un número
-document.getElementById('square').addEventListener('click', () => {
-    if (currentInput && !currentInput.includes(',')) {
-        let number = parseFloat(currentInput);
-        let result = number * number;
+    if (currentInput) {
+        const number = parseFloat(currentInput);
+        const result = number < 0 ? -number : number;
         currentInput = result.toString();
         updateInput();
         fillInfo(result);
-        updateInformativeField("Operation: Square calculated.");
-    } else {
-        notifyError('Error: Square function does not apply to CSV values.');
+        updateInformativeField(`Operation: Módulo calculated.`);
     }
+}
+
+// Función para elevar a potencia
+document.getElementById('power').addEventListener('click', () => {
+    document.getElementById('powerPopup').style.display = 'block'; // Mostrar el popup
 });
 
-// Función para calcular la raíz cuadrada
-document.getElementById('sqrt').addEventListener('click', () => {
-    if (currentInput && !currentInput.includes(',')) {
-        let number = parseFloat(currentInput);
-        if (number >= 0) {
-            let result = Math.sqrt(number);
+// Función para cerrar el popup
+document.getElementById('closePopup').addEventListener('click', () => {
+    document.getElementById('powerPopup').style.display = 'none'; // Ocultar el popup
+});
+
+// Calcular potencia al hacer clic en "Go!"
+document.getElementById('calculatePower').addEventListener('click', () => {
+    const exponent = document.getElementById('exponentInput').value;
+    const exponentNumber = parseFloat(exponent);
+
+    if (!isNaN(exponentNumber)) {
+        if (currentInput) {
+            const base = parseFloat(currentInput);
+            const result = Math.pow(base, exponentNumber);
             currentInput = result.toString();
             updateInput();
             fillInfo(result);
-            updateInformativeField("Operation: Square root calculated.");
+            updateInformativeField(`Operation: Raised to power ${exponentNumber}.`);
         } else {
-            notifyError('Error: Square root of a negative number is not allowed.');
+            notifyError("Error: Enter a number to raise to a power.");
         }
     } else {
-        notifyError('Error: Square root does not apply to CSV values.');
+        notifyError("Error: Invalid exponent entered.");
     }
+
+    // Cerrar el popup después del cálculo
+    document.getElementById('powerPopup').style.display = 'none';
 });
 
-// Evento para limpiar el input
-document.getElementById('input').addEventListener('click', () => {
-    currentInput = '';
-    firstNumber = null;
-    operator = '';
-    updateInput();
-    document.getElementById('info').textContent = '';
-});
+// Función para notificar errores
+function notifyError(message) {
+    updateInformativeField(message);
+}
 
-// Función para actualizar el campo informativo
+// Actualiza el campo informativo
 function updateInformativeField(message) {
     document.getElementById('info').textContent = message;
 }
 
-// Función para notificar errores
-function notifyError(message) {
-    alert(message);
-    clearCurrentInput();
+// Función para limpiar la entrada actual
+function clearCurrentInput() {
+    currentInput = '';
+    updateInput();
 }
