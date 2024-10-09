@@ -220,3 +220,50 @@ function notifyError(message) {
 function updateInformativeField(message) {
     document.getElementById('info').textContent = message; // Cambia el texto en el campo informativo
 }
+
+document.getElementById('square').addEventListener('click', () => {
+    if (currentInput && !currentInput.includes(',')) {
+        let number = parseFloat(currentInput);
+        let result = number * number;
+        currentInput = result.toString();
+        updateInput();
+        fillInfo(result); // Llama a fillInfo con el resultado
+    } else {
+        alert('Error: Square function does not apply to CSV values.');
+    }
+});
+
+// Función para actualizar el campo informativo
+function fillInfo(result) {
+    let infoMessage = '';
+
+    if (result < 100) {
+        infoMessage = "Info: The result is less than 100";
+    } else if (result >= 100 && result <= 200) {
+        infoMessage = "Info: The result is between 100 and 200";
+    } else {
+        infoMessage = "Info: The result is greater than 200";
+    }
+
+    document.getElementById('info').textContent = infoMessage;
+}
+
+// Evento para limpiar el input y el historial al hacer clic en la pantalla
+document.getElementById('input').addEventListener('click', () => {
+    clearCurrentInput(); // Limpia la entrada actual
+    clearHistory(); // Limpia el historial (si tienes una función para esto)
+});
+
+// Función para limpiar la entrada actual
+function clearCurrentInput() {
+    currentInput = ''; // Borra la memoria
+    updateInput(); // Actualiza la pantalla de entrada
+    document.getElementById('info').textContent = ''; // Limpia el campo informativo
+}
+
+// Función para limpiar el historial (implementa esto según tu lógica)
+function clearHistory() {
+    // Si tienes un historial almacenado, aquí puedes limpiarlo
+    // Por ejemplo, si tienes un arreglo llamado 'history':
+    // history = [];
+}
