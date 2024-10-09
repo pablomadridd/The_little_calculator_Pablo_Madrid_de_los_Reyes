@@ -1,35 +1,43 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Avanzada</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Calculator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="calculator">
-        <input type="text" id="input" placeholder="Ingresa números o valores CSV" onfocus="clearInput()" readonly aria-label="Campo de entrada">
-        <div id="info"></div>
-        <div class="button-container">
-            <button id="factorial" aria-label="Calcular factorial">Factorial</button>
-            <button id="modulo" aria-label="Calcular módulo">Módulo</button>
-            <button id="square" aria-label="Elevar al cuadrado">Elevación al cuadrado</button>
-            <button id="sqrt" aria-label="Calcular raíz cuadrada">Raíz cuadrada</button>
-        </div>
-        <div class="button-container">
-            <button id="addition" aria-label="Suma">+</button>
-            <button id="subtraction" aria-label="Resta">-</button>
-            <button id="division" aria-label="División">/</button>
-            <button id="multiplication" aria-label="Multiplicación">x</button>
-            <button id="equal" aria-label="Calcular resultado">=</button>
-        </div>
-        <div class="button-container">
-            <button id="sum" aria-label="Sumar valores CSV">Sumar CSV</button>
-            <button id="sort" aria-label="Ordenar valores CSV">Ordenar CSV</button>
-            <button id="reverse" aria-label="Revertir valores CSV">Revertir CSV</button>
-            <button id="removelast" aria-label="Eliminar último valor CSV">Eliminar Último CSV</button>
-        </div>
+      <input
+        type="text"
+        id="input"
+        placeholder="Enter numbers or CSV values"
+        onfocus="clearInput()"
+        readonly
+        aria-label="Input field"
+      />
+      <div id="info"></div>
+      <div class="button-container">
+        <button id="factorial" aria-label="Calculate factorial">Factorial</button>
+        <button id="modulo" aria-label="Calculate modulo">Modulo</button>
+        <button id="square" aria-label="Square">Square</button>
+        <button id="sqrt" aria-label="Square root">Square root</button>
+      </div>
+      <div class="button-container">
+        <button id="addition" aria-label="Addition">+</button>
+        <button id="subtraction" aria-label="Subtraction">-</button>
+        <button id="division" aria-label="Division">/</button>
+        <button id="multiplication" aria-label="Multiplication">x</button>
+        <button id="equal" aria-label="Calculate result">=</button>
+      </div>
+      <div class="button-container">
+        <button id="sign" aria-label="Change sign">+/-</button>
+        <button id="sum" aria-label="Sum CSV values">Sum CSV</button>
+        <button id="sort" aria-label="Sort CSV values">Sort CSV</button>
+        <button id="reverse" aria-label="Reverse CSV values">Reverse CSV</button>
+        <button id="removelast" aria-label="Remove last CSV value">Remove Last CSV</button>
+      </div>
     </div>
     <script src="functions.js"></script>
-</body>
+  </body>
 </html>

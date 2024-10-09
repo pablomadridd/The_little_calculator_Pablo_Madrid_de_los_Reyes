@@ -23,15 +23,14 @@ function updateInput() {
     document.getElementById('input').value = currentInput;
 }
 
-// Función para calcular el resultado de la operación
+// Manejar operaciones
 function calculate() {
     if (operator && firstNumber !== null) {
         let secondNumber = parseFloat(currentInput);
         let result = 0;
 
-        // Manejo de errores para división por cero
         if (operator === '/' && secondNumber === 0) {
-            alert("Error: División por cero no permitida.");
+            alert("Error: Division by zero not allowed.");
             clearCurrentInput();
             return;
         }
@@ -57,14 +56,50 @@ function calculate() {
     }
 }
 
-// Manejar los botones de operaciones
+// Botones de operaciones
 document.getElementById('addition').addEventListener('click', () => setOperator('+'));
 document.getElementById('subtraction').addEventListener('click', () => setOperator('-'));
 document.getElementById('division').addEventListener('click', () => setOperator('/'));
 document.getElementById('multiplication').addEventListener('click', () => setOperator('x'));
 document.getElementById('equal').addEventListener('click', calculate);
+document.getElementById('modulo').addEventListener('click', () => {
+    if (operator && firstNumber !== null) {
+        let secondNumber = parseFloat(currentInput);
+        
+        // Validar si el segundo número es válido y no es cero
+        if (secondNumber === 0) {
+            alert("Error: Division by zero is not allowed in modulo.");
+            clearCurrentInput();
+            return;
+        }
 
-// Funciones de CSV
+        let result = firstNumber % secondNumber; // Operación de módulo
+        currentInput = result.toString(); // Mostrar el resultado
+        updateInput();
+        fillInfo(result);
+    } else {
+        alert("Error: Enter valid numbers to use modulo.");
+    }
+});
+
+// Botón para cambiar signo
+document.getElementById('sign').addEventListener('click', () => {
+    if (currentInput) {
+        currentInput = (-parseFloat(currentInput)).toString();
+        updateInput();
+    }
+});
+
+// Diferenciar entre CSV y decimales
+function handleCSVInput() {
+    if (currentInput.includes(',') && currentInput.split(',').length > 1) {
+        return 'csv';
+    } else {
+        return 'decimal';
+    }
+}
+
+// Operaciones CSV
 document.getElementById('sum').addEventListener('click', () => handleCSVOperation('sum'));
 document.getElementById('sort').addEventListener('click', () => handleCSVOperation('sort'));
 document.getElementById('reverse').addEventListener('click', () => handleCSVOperation('reverse'));
@@ -72,85 +107,42 @@ document.getElementById('removelast').addEventListener('click', () => handleCSVO
 
 // Función para manejar operaciones CSV
 function handleCSVOperation(operation) {
-    // Obtener valores de la entrada
-    let input = currentInput;
-    if (input) {
-        let csvValues = input.split(',').map(Number);
-        
-        // Validar valores CSV
+    if (handleCSVInput() === 'csv') {
+        let csvValues = currentInput.split(',').map(Number);
+
         if (csvValues.some(isNaN)) {
-            alert("Error: Todos los valores deben ser números válidos.");
+            alert("Error: All values must be valid numbers.");
             clearCurrentInput();
             return;
         }
 
         switch (operation) {
             case 'sum':
-                let sum = csvValues.reduce((acc, val) => acc + val, 0);
-                currentInput = sum.toString(); // Mostrar el resultado en el input
+                currentInput = csvValues.reduce((acc, val) => acc + val, 0).toString();
                 updateInput();
                 break;
             case 'sort':
                 csvValues.sort((a, b) => a - b);
-                currentInput = csvValues.join(', '); // Mostrar los valores ordenados en el input
+                currentInput = csvValues.join(', ');
                 updateInput();
                 break;
             case 'reverse':
                 csvValues.reverse();
-                currentInput = csvValues.join(', '); // Mostrar los valores revertidos en el input
+                currentInput = csvValues.join(', ');
                 updateInput();
                 break;
             case 'removelast':
                 csvValues.pop();
-                currentInput = csvValues.join(', '); // Mostrar los valores después de eliminar el último
+                currentInput = csvValues.join(', ');
                 updateInput();
                 break;
         }
     } else {
-        alert("Error: Ingresa valores CSV primero.");
+        alert("Error: Enter CSV values.");
     }
 }
 
-// Funciones de operaciones adicionales
-document.getElementById('factorial').addEventListener('click', () => {
-    let num = parseInt(currentInput);
-    if (isNaN(num) || num < 0) {
-        alert("Error: Debe ingresar un número entero no negativo.");
-        clearCurrentInput();
-        return;
-    }
-    let fact = factorial(num);
-    currentInput = fact.toString(); // Mostrar el resultado en el input
-    updateInput();
-});
-
-document.getElementById('modulo').addEventListener('click', () => {
-    let num = parseFloat(currentInput);
-    let mod = num % 2; // Módulo 2
-    currentInput = mod.toString(); // Mostrar el resultado en el input
-    updateInput();
-});
-
-document.getElementById('square').addEventListener('click', () => {
-    let num = parseFloat(currentInput);
-    let square = num * num;
-    currentInput = square.toString(); // Mostrar el resultado en el input
-    updateInput();
-});
-
-document.getElementById('sqrt').addEventListener('click', () => {
-    let num = parseFloat(currentInput);
-    if (num < 0) {
-        alert("Error: No se puede calcular la raíz cuadrada de un número negativo.");
-        clearCurrentInput();
-        return;
-    }
-    let sqrt = Math.sqrt(num);
-    currentInput = sqrt.toString(); // Mostrar el resultado en el input
-    updateInput();
-});
-
-// Funciones auxiliares
+// Funciones adicionales
 function setOperator(op) {
     firstNumber = parseFloat(currentInput);
     operator = op;
@@ -158,29 +150,88 @@ function setOperator(op) {
     updateInput();
 }
 
-function factorial(num) {
-    if (num === 0 || num === 1) return 1;
-    return num * factorial(num - 1);
-}
-
 function fillInfo(result) {
-    document.getElementById('info').innerText = `Resultado: ${result}`;
+    document.getElementById('info').textContent = `Result: ${result}`;
 }
 
+// Limpia la entrada actual
 function clearCurrentInput() {
     currentInput = '';
     updateInput();
+    document.getElementById('info').textContent = '';
 }
 
+// Limpia el input cuando se enfoca
 function clearInput() {
     document.getElementById('input').value = '';
 }
 
-// NUEVA FUNCIÓN: Limpiar la pantalla y el historial al hacer clic en el campo de entrada
+// Función para calcular el factorial
+document.getElementById('factorial').addEventListener('click', () => {
+    if (currentInput && !currentInput.includes(',')) {
+        const number = parseInt(currentInput, 10);
+        if (number >= 0) {
+            let factorial = 1;
+            for (let i = 2; i <= number; i++) {
+                factorial *= i;
+            }
+            currentInput = factorial.toString();
+            updateInput();
+            fillInfo(factorial);
+        } else {
+            alert('Error: Factorial only applies to non-negative integers.');
+        }
+    } else {
+        alert('Error: Factorial does not apply to CSV values.');
+    }
+});
+
+// Función para calcular el módulo (resto)
+document.getElementById('modulo').addEventListener('click', () => {
+    if (operator && firstNumber !== null) {
+        let secondNumber = parseFloat(currentInput);
+        let result = firstNumber % secondNumber;
+        currentInput = result.toString();
+        updateInput();
+        fillInfo(result);
+    }
+});
+
+// Función para calcular el cuadrado de un número
+document.getElementById('square').addEventListener('click', () => {
+    if (currentInput && !currentInput.includes(',')) {
+        let number = parseFloat(currentInput);
+        let result = number * number;
+        currentInput = result.toString();
+        updateInput();
+        fillInfo(result);
+    } else {
+        alert('Error: Square function does not apply to CSV values.');
+    }
+});
+
+// Función para calcular la raíz cuadrada
+document.getElementById('sqrt').addEventListener('click', () => {
+    if (currentInput && !currentInput.includes(',')) {
+        let number = parseFloat(currentInput);
+        if (number >= 0) {
+            let result = Math.sqrt(number);
+            currentInput = result.toString();
+            updateInput();
+            fillInfo(result);
+        } else {
+            alert('Error: Square root of a negative number is not allowed.');
+        }
+    } else {
+        alert('Error: Square root does not apply to CSV values.');
+    }
+});
+
 document.getElementById('input').addEventListener('click', () => {
     currentInput = '';
     firstNumber = null;
     operator = '';
     updateInput();
-    document.getElementById('info').innerText = '';  // Limpiar el historial
+    document.getElementById('info').textContent = '';
 });
+

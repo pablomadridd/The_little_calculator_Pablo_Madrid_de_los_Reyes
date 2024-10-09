@@ -1,77 +1,72 @@
 /* Estilos globales */
 body {
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f9; /* Color de fondo suave */
-    margin: 0;
+  font-family: "Arial", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+  margin: 0;
 }
 
 /* Estilos de la calculadora */
 .calculator {
-    background-color: #ffffff; /* Fondo blanco */
-    padding: 20px;
-    border: none; /* Sin borde */
-    border-radius: 15px; /* Bordes redondeados */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    text-align: center;
-    max-width: 400px; /* Aumento del ancho máximo */
-    width: 100%; /* Para que ocupe el espacio disponible */
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
 }
 
 /* Estilos del input */
 input {
-    margin-bottom: 15px;
-    padding: 15px; /* Mantener el padding para el input */
-    width: calc(100% - 30px); /* Ajustar el ancho para que tenga la misma distancia de los bordes */
-    font-size: 1.5em; /* Tamaño de fuente más grande */
-    border: none; /* Sin borde */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra interna suave */
-    background-color: #e7e7e7; /* Fondo gris claro */
-    transition: background-color 0.3s; /* Transición de color de fondo */
+  margin-bottom: 15px;
+  padding: 15px;
+  width: calc(100% - 30px);
+  font-size: 1.5em;
+  border: none;
+  border-radius: 10px;
+  background-color: #e7e7e7;
+  transition: background-color 0.3s;
 }
 
-/* Cambiar color del input al enfocarse */
 input:focus {
-    background-color: #ffffff; /* Fondo blanco al enfocar */
-    outline: none; /* Sin contorno */
+  background-color: #ffffff;
+  outline: none;
 }
 
 /* Contenedor de botones */
 .button-container {
-    display: flex;
-    flex-wrap: wrap; /* Permite que los botones se ajusten a la fila */
-    justify-content: center; /* Centrar los botones */
-    margin: 10px 0; /* Margen vertical entre contenedores */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 10px 0;
 }
 
-/* Estilos de los botones */
 button {
-    margin: 5px;
-    padding: 15px;
-    cursor: pointer;
-    background-color: #6200ea; /* Color de fondo atractivo */
-    color: #ffffff; /* Texto blanco */
-    border: none; /* Sin borde */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    font-size: 1.1em; /* Tamaño de fuente ligeramente mayor */
-    transition: background-color 0.3s, transform 0.2s; /* Transiciones suaves */
-    flex: 1 1 100px; /* Botones flexibles que crecen según el espacio disponible */
+  margin: 5px;
+  padding: 15px;
+  cursor: pointer;
+  background-color: #6200ea;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-size: 1.1em;
+  transition: background-color 0.3s, transform 0.2s;
+  flex: 1 1 100px;
 }
 
-/* Efecto hover para los botones */
 button:hover {
-    background-color: #3700b3; /* Color más oscuro al pasar el mouse */
-    transform: translateY(-3px); /* Mover hacia arriba */
+  background-color: #3700b3;
+  transform: translateY(-3px);
 }
 
 /* Estilo para el texto de resultados */
 #info {
-    margin-top: 10px;
-    font-size: 1.2em; /* Tamaño de fuente del resultado */
-    color: #333; /* Color de texto oscuro */
+  margin-top: 10px;
+  font-size: 1.2em;
+  color: #333;
 }
