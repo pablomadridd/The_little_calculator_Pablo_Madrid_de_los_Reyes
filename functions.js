@@ -36,8 +36,9 @@ function calculate() {
         let secondNumber = parseFloat(currentInput);
         let result = 0;
 
+        // Validar división por cero
         if (operator === '/' && secondNumber === 0) {
-            alert("Error: Division by zero not allowed.");
+            notifyError("Error: Division by zero not allowed.");
             clearCurrentInput();
             return;
         }
@@ -45,16 +46,29 @@ function calculate() {
         switch (operator) {
             case '+':
                 result = firstNumber + secondNumber;
+                updateInformativeField(`Operation: Addition.`);
                 break;
             case '-':
                 result = firstNumber - secondNumber;
+                updateInformativeField(`Operation: Subtraction.`);
                 break;
             case '/':
                 result = firstNumber / secondNumber;
+                updateInformativeField(`Operation: Division.`);
                 break;
             case 'x':
                 result = firstNumber * secondNumber;
+                updateInformativeField(`Operation: Multiplication.`);
                 break;
+        }
+
+        // Verificar el rango del resultado y actualizar el mensaje
+        if (result < 100) {
+            updateInformativeField(`Operation result: ${result} (less than 100).`);
+        } else if (result >= 100 && result <= 200) {
+            updateInformativeField(`Operation result: ${result} (between 100 and 200).`);
+        } else {
+            updateInformativeField(`Operation result: ${result} (greater than 200).`);
         }
 
         currentInput = result.toString();
@@ -100,7 +114,7 @@ function handleCSVOperation(operation) {
         let csvValues = currentInput.split(',').map(Number);
 
         if (csvValues.some(isNaN)) {
-            alert("Error: All values must be valid numbers.");
+            notifyError("Error: All values must be valid numbers.");
             clearCurrentInput();
             return;
         }
@@ -108,26 +122,27 @@ function handleCSVOperation(operation) {
         switch (operation) {
             case 'sum':
                 currentInput = csvValues.reduce((acc, val) => acc + val, 0).toString();
-                updateInput();
+                updateInformativeField("Operation: Sum of CSV values processed.");
                 break;
             case 'sort':
                 csvValues.sort((a, b) => a - b);
                 currentInput = csvValues.join(', ');
-                updateInput();
+                updateInformativeField("Operation: Sorted CSV values.");
                 break;
             case 'reverse':
                 csvValues.reverse();
                 currentInput = csvValues.join(', ');
-                updateInput();
+                updateInformativeField("Operation: Reversed CSV values.");
                 break;
             case 'removelast':
                 csvValues.pop();
                 currentInput = csvValues.join(', ');
-                updateInput();
+                updateInformativeField("Operation: Last value removed from CSV.");
                 break;
         }
+        updateInput();
     } else {
-        alert("Error: Enter CSV values.");
+        notifyError("Error: Enter CSV values.");
     }
 }
 
@@ -168,10 +183,10 @@ document.getElementById('factorial').addEventListener('click', () => {
             updateInput();
             fillInfo(factorial);
         } else {
-            alert('Error: Factorial only applies to non-negative integers.');
+            notifyError('Error: Factorial only applies to non-negative integers.');
         }
     } else {
-        alert('Error: Factorial does not apply to CSV values.');
+        notifyError('Error: Factorial does not apply to CSV values.');
     }
 });
 
@@ -183,7 +198,7 @@ function mod() {
     let num = parseFloat(currentInput); // Obtener el número ingresado
 
     if (isNaN(num)) { // Validar que sea un número
-        alert("Error: Please enter a valid number.");
+        notifyError("Error: Please enter a valid number.");
         clearCurrentInput();
         return;
     }
@@ -201,8 +216,9 @@ document.getElementById('square').addEventListener('click', () => {
         currentInput = result.toString();
         updateInput();
         fillInfo(result);
+        updateInformativeField("Operation: Square calculated.");
     } else {
-        alert('Error: Square function does not apply to CSV values.');
+        notifyError('Error: Square function does not apply to CSV values.');
     }
 });
 
@@ -215,14 +231,16 @@ document.getElementById('sqrt').addEventListener('click', () => {
             currentInput = result.toString();
             updateInput();
             fillInfo(result);
+            updateInformativeField("Operation: Square root calculated.");
         } else {
-            alert('Error: Square root of a negative number is not allowed.');
+            notifyError('Error: Square root of a negative number is not allowed.');
         }
     } else {
-        alert('Error: Square root does not apply to CSV values.');
+        notifyError('Error: Square root does not apply to CSV values.');
     }
 });
 
+// Evento para limpiar el input
 document.getElementById('input').addEventListener('click', () => {
     currentInput = '';
     firstNumber = null;
@@ -230,3 +248,14 @@ document.getElementById('input').addEventListener('click', () => {
     updateInput();
     document.getElementById('info').textContent = '';
 });
+
+// Función para actualizar el campo informativo
+function updateInformativeField(message) {
+    document.getElementById('info').textContent = message;
+}
+
+// Función para notificar errores
+function notifyError(message) {
+    alert(message);
+    clearCurrentInput();
+}
