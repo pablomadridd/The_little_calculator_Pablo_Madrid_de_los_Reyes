@@ -46,19 +46,19 @@ function calculate() {
         switch (operator) {
             case '+':
                 result = firstNumber + secondNumber;
-                updateInformativeField(`Operation: Addition.`);
+                updateInformativeField("Operation: Addition.");
                 break;
             case '-':
                 result = firstNumber - secondNumber;
-                updateInformativeField(`Operation: Subtraction.`);
+                updateInformativeField("Operation: Subtraction.");
                 break;
             case '/':
                 result = firstNumber / secondNumber;
-                updateInformativeField(`Operation: Division.`);
+                updateInformativeField("Operation: Division.");
                 break;
             case 'x':
                 result = firstNumber * secondNumber;
-                updateInformativeField(`Operation: Multiplication.`);
+                updateInformativeField("Operation: Multiplication.");
                 break;
         }
 
@@ -130,80 +130,93 @@ function handleCSVOperation(operation) {
                 updateInformativeField("Operation: Sorted CSV values.");
                 break;
             case 'reverse':
-                currentInput = csvValues.reverse().join(', ');
+                csvValues.reverse();
+                currentInput = csvValues.join(', ');
                 updateInformativeField("Operation: Reversed CSV values.");
                 break;
             case 'removelast':
                 csvValues.pop();
                 currentInput = csvValues.join(', ');
-                updateInformativeField("Operation: Removed last CSV value.");
+                updateInformativeField("Operation: Last value removed from CSV.");
                 break;
         }
-
         updateInput();
     } else {
-        notifyError("Error: Please enter valid CSV values.");
+        notifyError("Error: Enter CSV values.");
     }
 }
 
-// Función para calcular el módulo
-function mod() {
-    if (currentInput) {
-        const number = parseFloat(currentInput);
-        const result = number < 0 ? -number : number;
-        currentInput = result.toString();
-        updateInput();
-        fillInfo(result);
-        updateInformativeField(`Operation: Módulo calculated.`);
-    }
+// Funciones adicionales
+function setOperator(op) {
+    firstNumber = parseFloat(currentInput); // Establece el primer número
+    operator = op; // Establece el operador
+    currentInput = ''; // Limpia la entrada actual para el siguiente número
+    updateInput(); // Actualiza la pantalla de entrada
 }
 
-// Función para elevar a potencia
-document.getElementById('power').addEventListener('click', () => {
-    document.getElementById('powerPopup').style.display = 'block'; // Mostrar el popup
-});
-
-// Función para cerrar el popup
-document.getElementById('closePopup').addEventListener('click', () => {
-    document.getElementById('powerPopup').style.display = 'none'; // Ocultar el popup
-});
-
-// Calcular potencia al hacer clic en "Go!"
-document.getElementById('calculatePower').addEventListener('click', () => {
-    const exponent = document.getElementById('exponentInput').value;
-    const exponentNumber = parseFloat(exponent);
-
-    if (!isNaN(exponentNumber)) {
-        if (currentInput) {
-            const base = parseFloat(currentInput);
-            const result = Math.pow(base, exponentNumber);
-            currentInput = result.toString();
-            updateInput();
-            fillInfo(result);
-            updateInformativeField(`Operation: Raised to power ${exponentNumber}.`);
-        } else {
-            notifyError("Error: Enter a number to raise to a power.");
-        }
-    } else {
-        notifyError("Error: Invalid exponent entered.");
-    }
-
-    // Cerrar el popup después del cálculo
-    document.getElementById('powerPopup').style.display = 'none';
-});
-
-// Función para notificar errores
-function notifyError(message) {
-    updateInformativeField(message);
+function fillInfo(result) {
+    document.getElementById('info').textContent = `Result: ${result}`;
 }
 
-// Actualiza el campo informativo
-function updateInformativeField(message) {
-    document.getElementById('info').textContent = message;
-}
-
-// Función para limpiar la entrada actual
+// Limpia la entrada actual
 function clearCurrentInput() {
     currentInput = '';
     updateInput();
+    document.getElementById('info').textContent = '';
+}
+
+// Limpia el input cuando se enfoca
+function clearInput() {
+    document.getElementById('input').value = '';
+}
+
+// Función para calcular el factorial
+document.getElementById('factorial').addEventListener('click', () => {
+    if (currentInput && !currentInput.includes(',')) {
+        const number = parseInt(currentInput, 10);
+        if (number >= 0) {
+            let factorial = 1;
+            for (let i = 2; i <= number; i++) {
+                factorial *= i;
+            }
+            currentInput = factorial.toString();
+            updateInput();
+            fillInfo(factorial);
+        } else {
+            notifyError('Error: Factorial only applies to non-negative integers.');
+        }
+    } else {
+        notifyError('Error: Factorial does not apply to CSV values.');
+    }
+});
+
+// Función para calcular el módulo (resto)
+document.getElementById('modulo').addEventListener('click', mod);
+
+// Función para calcular el módulo (resto)
+function mod() {
+    let num = parseFloat(currentInput); // Obtener el número ingresado
+
+    if (isNaN(num)) { // Validar que sea un número
+        notifyError("Error: Please enter a valid number.");
+        clearCurrentInput();
+        return;
+    }
+
+    // Calcular el módulo
+    const result = (num >= 0) ? num : -num; // Si es negativo, devolver -num; de lo contrario, devolver el número
+
+    currentInput = result.toString(); // Actualizar la entrada
+    updateInput(); // Mostrar en la pantalla
+    fillInfo(result); // Llenar información
+}
+
+// Función para notificar errores
+function notifyError(message) {
+    document.getElementById('info').textContent = message; // Actualiza el campo informativo
+}
+
+// Actualiza el campo informativo basado en la operación realizada
+function updateInformativeField(message) {
+    document.getElementById('info').textContent = message; // Cambia el texto en el campo informativo
 }

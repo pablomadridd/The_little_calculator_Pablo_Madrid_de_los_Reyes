@@ -71,39 +71,3 @@ button:hover {
   color: #333;
 }
 
-/* Estilo para el popup */
-.popup {
-  display: none; /* Oculto por defecto */
-  position: fixed; /* Mantener el popup en una posición fija */
-  z-index: 1; /* Asegurarse de que esté en la parte superior */
-  left: 0;
-  top: 0;
-  width: 100%; /* Ancho completo */
-  height: 100%; /* Alto completo */
-  overflow: auto; /* Activar scroll si es necesario */
-  background-color: rgb(0,0,0); /* Fondo negro */
-  background-color: rgba(0,0,0,0.4); /* Fondo negro con opacidad */
-}
-
-.popup-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* Centramos el popup */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 300px; /* Ancho del popup */
-  text-align: center; /* Centrar el texto */
-}
-
-.close {
-  color: #aaa;
-  float: right; /* Alinear a la derecha */
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black; /* Cambiar color al pasar el ratón */
-  text-decoration: none;
-  cursor: pointer;
-}
