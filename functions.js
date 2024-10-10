@@ -231,3 +231,41 @@ function fillInfo(result) {
     // Actualizar el campo informativo
     infoElement.textContent = message;
 }
+
+document.getElementById('power').addEventListener('click', () => {
+    if (currentInput) {
+        let exponent = prompt("Enter the exponent:");
+        if (exponent !== null && !isNaN(exponent)) {
+            let result = Math.pow(parseFloat(currentInput), parseFloat(exponent));
+            currentInput = result.toString();
+            updateInput();
+            updateInformativeField("Operation: Power.");
+            fillInfo(result);
+        } else {
+            notifyError("Error: Invalid exponent.");
+        }
+    } else {
+        notifyError("Error: No number entered.");
+    }
+});
+
+document.getElementById('removeSpecific').addEventListener('click', () => {
+    if (currentInput.includes(',')) {
+        let valueToRemove = prompt("Enter the number to remove from the CSV:");
+        if (valueToRemove !== null) {
+            let csvValues = currentInput.split(',').map(Number);
+            valueToRemove = parseFloat(valueToRemove);
+            const index = csvValues.indexOf(valueToRemove);
+            if (index !== -1) {
+                csvValues.splice(index, 1); // Eliminar el valor específico
+                currentInput = csvValues.join(', ');
+                updateInput();
+                updateInformativeField(`Operation: Removed ${valueToRemove} from CSV values.`);
+            } else {
+                notifyError("Error: Value not found in CSV.");
+            }
+        }
+    } else {
+        notifyError("Error: No CSV values to process.");
+    }
+});
