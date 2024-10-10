@@ -5,40 +5,31 @@ let firstNumber = null;
 
 // Manejar entrada de teclado
 document.addEventListener('keydown', (event) => {
-    // Permitir números, punto decimal y coma
     if (!isNaN(event.key) || event.key === '.' || event.key === ',') {
         appendToInput(event.key);
-    } 
-    // Permitir el signo negativo solo si el campo de entrada está vacío o si el último carácter es una operación
-    else if (event.key === '-' && (currentInput === '' || ['+', '-', 'x', '/'].includes(currentInput.slice(-1)))) {
+    } else if (event.key === '-' && (currentInput === '' || ['+', '-', 'x', '/'].includes(currentInput.slice(-1)))) {
         appendToInput(event.key);
-    }
-    // Manejar la tecla Enter
-    else if (event.key === 'Enter') {
+    } else if (event.key === 'Enter') {
         calculate();
     }
 });
 
-// Función para añadir números al input
 function appendToInput(value) {
     currentInput += value;
     updateInput();
 }
 
-// Actualizar el input visual
 function updateInput() {
     document.getElementById('input').value = currentInput;
 }
 
-// Manejar operaciones
 function calculate() {
     if (operator && firstNumber !== null) {
         let secondNumber = parseFloat(currentInput);
         let result = 0;
 
-        // Validar división por cero
         if (operator === '/' && secondNumber === 0) {
-            notifyError("Error: Division by zero not allowed.");
+            notifyError("Error: Division by zero.");
             clearCurrentInput();
             return;
         }
@@ -60,15 +51,6 @@ function calculate() {
                 result = firstNumber * secondNumber;
                 updateInformativeField("Operation: Multiplication.");
                 break;
-        }
-
-        // Verificar el rango del resultado y actualizar el mensaje
-        if (result < 100) {
-            updateInformativeField(`Operation result: ${result} (less than 100).`);
-        } else if (result >= 100 && result <= 200) {
-            updateInformativeField(`Operation result: ${result} (between 100 and 200).`);
-        } else {
-            updateInformativeField(`Operation result: ${result} (greater than 200).`);
         }
 
         currentInput = result.toString();
@@ -93,28 +75,19 @@ document.getElementById('sign').addEventListener('click', () => {
     }
 });
 
-// Diferenciar entre CSV y decimales
-function handleCSVInput() {
-    if (currentInput.includes(',') && currentInput.split(',').length > 1) {
-        return 'csv';
-    } else {
-        return 'decimal';
-    }
-}
-
 // Operaciones CSV
 document.getElementById('sum').addEventListener('click', () => handleCSVOperation('sum'));
 document.getElementById('sort').addEventListener('click', () => handleCSVOperation('sort'));
 document.getElementById('reverse').addEventListener('click', () => handleCSVOperation('reverse'));
 document.getElementById('removelast').addEventListener('click', () => handleCSVOperation('removelast'));
 
-// Función para manejar operaciones CSV
+// Manejo de CSV y validación de errores
 function handleCSVOperation(operation) {
     if (handleCSVInput() === 'csv') {
         let csvValues = currentInput.split(',').map(Number);
 
         if (csvValues.some(isNaN)) {
-            notifyError("Error: All values must be valid numbers.");
+            notifyError("Error: Invalid CSV values.");
             clearCurrentInput();
             return;
         }
@@ -122,148 +95,139 @@ function handleCSVOperation(operation) {
         switch (operation) {
             case 'sum':
                 currentInput = csvValues.reduce((acc, val) => acc + val, 0).toString();
-                updateInformativeField("Operation: Sum of CSV values processed.");
+                updateInformativeField("Operation: Sum of CSV values.");
                 break;
             case 'sort':
                 csvValues.sort((a, b) => a - b);
                 currentInput = csvValues.join(', ');
-                updateInformativeField("Operation: Sorted CSV values.");
+                updateInformativeField("Operation: CSV values sorted.");
                 break;
             case 'reverse':
                 csvValues.reverse();
                 currentInput = csvValues.join(', ');
-                updateInformativeField("Operation: Reversed CSV values.");
+                updateInformativeField("Operation: CSV values reversed.");
                 break;
             case 'removelast':
                 csvValues.pop();
                 currentInput = csvValues.join(', ');
-                updateInformativeField("Operation: Last value removed from CSV.");
+                updateInformativeField("Operation: Last CSV value removed.");
                 break;
         }
         updateInput();
     } else {
-        notifyError("Error: Enter CSV values.");
+        notifyError("Error: Invalid input, CSV values expected.");
     }
 }
 
 // Funciones adicionales
 function setOperator(op) {
-    firstNumber = parseFloat(currentInput); // Establece el primer número
-    operator = op; // Establece el operador
-    currentInput = ''; // Limpia la entrada actual para el siguiente número
-    updateInput(); // Actualiza la pantalla de entrada
+    firstNumber = parseFloat(currentInput);
+    operator = op;
+    currentInput = '';
+    updateInput();
 }
 
 function fillInfo(result) {
     document.getElementById('info').textContent = `Result: ${result}`;
 }
 
-// Limpia la entrada actual
-function clearCurrentInput() {
+function clearInput() {
     currentInput = '';
     updateInput();
     document.getElementById('info').textContent = '';
 }
 
-// Limpia el input cuando se enfoca
-function clearInput() {
-    document.getElementById('input').value = '';
+function clearCurrentInput() {
+    currentInput = '';
+    updateInput();
 }
 
-// Función para calcular el factorial
-document.getElementById('factorial').addEventListener('click', () => {
-    if (currentInput && !currentInput.includes(',')) {
-        const number = parseInt(currentInput, 10);
-        if (number >= 0) {
-            let factorial = 1;
-            for (let i = 2; i <= number; i++) {
-                factorial *= i;
-            }
-            currentInput = factorial.toString();
-            updateInput();
-            fillInfo(factorial);
-        } else {
-            notifyError('Error: Factorial only applies to non-negative integers.');
-        }
-    } else {
-        notifyError('Error: Factorial does not apply to CSV values.');
-    }
-});
+document.getElementById('clear').addEventListener('click', clearInput);
 
-// Función para calcular el módulo (resto)
-document.getElementById('modulo').addEventListener('click', mod);
-
-// Función para calcular el módulo (resto)
-function mod() {
-    let num = parseFloat(currentInput); // Obtener el número ingresado
-
-    if (isNaN(num)) { // Validar que sea un número
-        notifyError("Error: Please enter a valid number.");
-        clearCurrentInput();
-        return;
-    }
-
-    // Calcular el módulo
-    const result = (num >= 0) ? num : -num; // Si es negativo, devolver -num; de lo contrario, devolver el número
-
-    currentInput = result.toString(); // Actualizar la entrada
-    updateInput(); // Mostrar en la pantalla
-    fillInfo(result); // Llenar información
-}
-
-// Función para notificar errores
-function notifyError(message) {
-    document.getElementById('info').textContent = message; // Actualiza el campo informativo
-}
-
-// Actualiza el campo informativo basado en la operación realizada
-function updateInformativeField(message) {
-    document.getElementById('info').textContent = message; // Cambia el texto en el campo informativo
-}
-
+// Operaciones unarias
 document.getElementById('square').addEventListener('click', () => {
-    if (currentInput && !currentInput.includes(',')) {
-        let number = parseFloat(currentInput);
-        let result = number * number;
+    if (currentInput) {
+        let result = Math.pow(parseFloat(currentInput), 2);
         currentInput = result.toString();
         updateInput();
-        fillInfo(result); // Llama a fillInfo con el resultado
-    } else {
-        alert('Error: Square function does not apply to CSV values.');
+        updateInformativeField("Operation: Square.");
+        fillInfo(result);
     }
 });
 
-// Función para actualizar el campo informativo
+document.getElementById('sqrt').addEventListener('click', () => {
+    if (currentInput) {
+        if (parseFloat(currentInput) < 0) {
+            notifyError("Error: Square root of a negative number is not real.");
+            return;
+        }
+        let result = Math.sqrt(parseFloat(currentInput));
+        currentInput = result.toString();
+        updateInput();
+        updateInformativeField("Operation: Square root.");
+        fillInfo(result);
+    }
+});
+
+document.getElementById('factorial').addEventListener('click', () => {
+    if (!currentInput.includes(',')) {
+        let number = parseInt(currentInput);
+        if (number < 0) {
+            notifyError("Error: Factorial of a negative number is not possible.");
+        } else if (number > 170) {
+            notifyError("Error: Number too large for factorial.");
+        } else {
+            currentInput = factorial(number).toString();
+            updateInput();
+            updateInformativeField("Operation: Factorial.");
+        }
+    } else {
+        notifyError("Error: Invalid input for factorial.");
+    }
+});
+
+function factorial(n) {
+    if (n === 0 || n === 1) return 1;
+    return n * factorial(n - 1);
+}
+
+function mod() {
+    if (currentInput) {
+        currentInput = Math.abs(parseFloat(currentInput)).toString();
+        updateInput();
+        updateInformativeField("Operation: Modulo.");
+    }
+}
+
+// Manejo de errores
+function notifyError(errorMessage) {
+    alert(errorMessage);
+    document.getElementById('info').textContent = errorMessage;
+}
+
+function updateInformativeField(message) {
+    document.getElementById('info').textContent = message;
+}
+
+function handleCSVInput() {
+    if (currentInput.includes(',')) return 'csv';
+    return 'number';
+}
+
+
 function fillInfo(result) {
-    let infoMessage = '';
+    let infoElement = document.getElementById('info');
+    let message = `Result: ${result}. `;
 
+    // Verificar si el resultado es menor que 100, entre 100-200, o mayor a 200
     if (result < 100) {
-        infoMessage = "Info: The result is less than 100";
+        message += "The result is less than 100.";
     } else if (result >= 100 && result <= 200) {
-        infoMessage = "Info: The result is between 100 and 200";
-    } else {
-        infoMessage = "Info: The result is greater than 200";
+        message += "The result is between 100 and 200.";
+    } else if (result > 200) {
+        message += "The result is greater than 200.";
     }
 
-    document.getElementById('info').textContent = infoMessage;
-}
-
-// Evento para limpiar el input y el historial al hacer clic en la pantalla
-document.getElementById('input').addEventListener('click', () => {
-    clearCurrentInput(); // Limpia la entrada actual
-    clearHistory(); // Limpia el historial (si tienes una función para esto)
-});
-
-// Función para limpiar la entrada actual
-function clearCurrentInput() {
-    currentInput = ''; // Borra la memoria
-    updateInput(); // Actualiza la pantalla de entrada
-    document.getElementById('info').textContent = ''; // Limpia el campo informativo
-}
-
-// Función para limpiar el historial (implementa esto según tu lógica)
-function clearHistory() {
-    // Si tienes un historial almacenado, aquí puedes limpiarlo
-    // Por ejemplo, si tienes un arreglo llamado 'history':
-    // history = [];
+    // Actualizar el campo informativo
+    infoElement.textContent = message;
 }

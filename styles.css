@@ -30,13 +30,13 @@ input {
   border-radius: 10px;
   background-color: #e7e7e7;
   transition: background-color 0.3s;
+  text-align: right; /* Alinea el texto a la derecha */
 }
 
 input:focus {
   background-color: #ffffff;
   outline: none;
 }
-
 /* Contenedor de botones */
 .button-container {
   display: flex;
@@ -70,4 +70,3 @@ button:hover {
   font-size: 1.2em;
   color: #333;
 }
-
