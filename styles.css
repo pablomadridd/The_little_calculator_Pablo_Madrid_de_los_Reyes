@@ -70,3 +70,36 @@ button:hover {
   font-size: 1.2em;
   color: #333;
 }
+
+
+.theme-toggle-container {
+  position: absolute; /* Permite moverlo libremente */
+  top: 20px; /* Ajusta la posición vertical */
+  right: 20px; /* Ajusta la posición horizontal */
+  z-index: 10; /* Asegura que esté por encima de otros elementos */
+}
+
+#toggleTheme {
+  background-color: #6200ea; /* Color de fondo */
+  color: #ffffff; /* Color del texto */
+  border: none; /* Sin borde */
+  border-radius: 50%; /* Hace que el botón sea redondo */
+  width: 40px; /* Ancho del botón */
+  height: 40px; /* Altura del botón */
+  font-size: 1.5em; /* Tamaño del icono */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  transition: background-color 0.3s; /* Animación de cambio de color */
+}
+
+#toggleTheme:hover {
+  background-color: #3700b3; /* Color de fondo al pasar el cursor */
+}
+
+body.dark-theme {
+  background-color: #333;
+  color: #fff;
+}
+
+.calculator.dark-theme {
+  background-color: #444;
+}

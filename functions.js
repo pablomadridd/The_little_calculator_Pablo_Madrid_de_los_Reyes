@@ -269,3 +269,11 @@ document.getElementById('removeSpecific').addEventListener('click', () => {
         notifyError("Error: No CSV values to process.");
     }
 });
+
+
+let isDarkTheme = false;
+
+document.getElementById('toggleTheme').addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme', isDarkTheme);
+    isDarkTheme = !isDarkTheme;
+});
