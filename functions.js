@@ -2,6 +2,9 @@
 let currentInput = '';
 let operator = '';
 let firstNumber = null;
+// Array para almacenar los errores para el log
+let errorLog = [];
+
 
 // Manejar entrada de teclado
 document.addEventListener('keydown', (event) => {
@@ -35,6 +38,7 @@ function eq() {
 
         if (operator === '/' && secondNumber === 0) {
             notifyError("Error: Division by zero.");
+            logError("Division by zero");  // Agregamos el log de errores
             clearCurrentInput();
             return;
         }
@@ -85,6 +89,7 @@ document.getElementById('sum').addEventListener('click', () => handleCSVOperatio
 document.getElementById('sort').addEventListener('click', () => handleCSVOperation('sort'));
 document.getElementById('reverse').addEventListener('click', () => handleCSVOperation('reverse'));
 document.getElementById('removelast').addEventListener('click', () => handleCSVOperation('removelast'));
+document.getElementById('average').addEventListener('click', () => handleCSVOperation('average'));
 
 // Manejo de CSV y validación de errores
 function handleCSVOperation(operation) {
@@ -125,6 +130,13 @@ function handleCSVOperation(operation) {
             currentInput = csvValues.join(', ');
             updateInformativeField("Operation: Last CSV value removed.");
             fillInfo(currentInput.length, operation); // Puedes ajustar esto si quieres otro tipo de resultado
+            break;
+        case 'average':
+            let average = csvValues.reduce((acc, val) => acc + val, 0) / csvValues.length;
+            currentInput = average.toString();
+            updateInput();
+            updateInformativeField("Operation: Average of CSV values.");
+            fillInfo(average, "Average CSV");
             break;
     }
     updateInput();
@@ -188,6 +200,7 @@ document.getElementById('sqrt').addEventListener('click', () => {
     if (currentInput) {
         if (parseFloat(currentInput) < 0) {
             notifyError("Error: Square root of a negative number is not real.");
+            logError("Square root of negative number");  // Agregamos el log de errore
             return;
         }
         let result = Math.sqrt(parseFloat(currentInput));
@@ -203,8 +216,10 @@ document.getElementById('factorial').addEventListener('click', () => {
         let number = parseInt(currentInput);
         if (number < 0) {
             notifyError("Error: Factorial of a negative number is not possible.");
+            logError("Factorial of negative number");  // Agregamos el log de errores
         } else if (number > 170) {
             notifyError("Error: Number too large for factorial.");
+            logError("Factorial too large");  // Agregamos el log de errores
         } else {
             currentInput = fact(number).toString();
             updateInput();
@@ -296,7 +311,9 @@ document.getElementById('toggleTheme').addEventListener('click', () => {
 function validate(input) {
     // Verificar si la entrada está vacía
     if (!input) {
-        notifyError("Error: Input cannot be empty.");
+        const errorMessage = "Error: Input cannot be empty.";
+        notifyError(errorMessage);
+        logError(errorMessage);
         return false;
     }
 
@@ -313,8 +330,46 @@ function validate(input) {
     }
 
     // Si no es un número ni un CSV válido
-    notifyError("Error: Invalid input. Please enter a valid number or CSV values.");
+    const errorMessage = "Error: Invalid input. Please enter a valid number or CSV values.";
+    notifyError(errorMessage);
+    logError(errorMessage);
     return false;
 }
 
 
+// Función para notificar el error en el campo de información y mostrar un alert
+function notifyError(errorMessage) {
+    alert(errorMessage);
+    document.getElementById('info').textContent = errorMessage;
+    logError(errorMessage);  // Agregamos el log de errores aquí
+}
+
+// Función para registrar los errores
+function logError(error) {
+    const timestamp = new Date().toISOString();
+    errorLog.push({ error, timestamp });
+}
+
+// Función para generar el archivo CSV de los errores
+function downloadErrorLog() {
+    if (errorLog.length === 0) {
+        alert("No errors logged.");
+        return;
+    }
+
+    let csvContent = "data:text/csv;charset=utf-8,Error,Timestamp\n";
+    errorLog.forEach(log => {
+        csvContent += `${log.error},${log.timestamp}\n`;
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'error_log.csv');
+    document.body.appendChild(link); // Required for Firefox
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Agregar evento para el botón de descarga del log
+document.getElementById('downloadLog').addEventListener('click', downloadErrorLog);
