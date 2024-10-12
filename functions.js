@@ -24,12 +24,10 @@ function updateInput() {
 }
 
 function eq() {
-
     if (!validate(currentInput)) {
         clearCurrentInput();
         return; // Salir si la entrada es inválida
     }
-
 
     if (operator && firstNumber !== null) {
         let secondNumber = parseFloat(currentInput);
@@ -62,8 +60,7 @@ function eq() {
 
         currentInput = result.toString();
         updateInput();
-        fillInfo(result);
-
+        fillInfo(result, operator); // Actualizar información aquí
     }
 }
 
@@ -109,26 +106,29 @@ function handleCSVOperation(operation) {
         case 'sum':
             currentInput = csvValues.reduce((acc, val) => acc + val, 0).toString();
             updateInformativeField("Operation: Sum of CSV values.");
+            fillInfo(parseFloat(currentInput), operation); // Actualizar información aquí
             break;
         case 'sort':
             csvValues.sort((a, b) => a - b);
             currentInput = csvValues.join(', ');
             updateInformativeField("Operation: CSV values sorted.");
+            fillInfo(currentInput.length, operation); // Puedes ajustar esto si quieres otro tipo de resultado
             break;
         case 'reverse':
             csvValues.reverse();
             currentInput = csvValues.join(', ');
             updateInformativeField("Operation: CSV values reversed.");
+            fillInfo(currentInput.length, operation); // Puedes ajustar esto si quieres otro tipo de resultado
             break;
         case 'removelast':
             csvValues.pop();
             currentInput = csvValues.join(', ');
             updateInformativeField("Operation: Last CSV value removed.");
+            fillInfo(currentInput.length, operation); // Puedes ajustar esto si quieres otro tipo de resultado
             break;
     }
     updateInput();
 }
-
 
 // Funciones adicionales
 function setOperator(op) {
@@ -138,8 +138,26 @@ function setOperator(op) {
     updateInput();
 }
 
-function fillInfo(result) {
-    document.getElementById('info').textContent = `Result: ${result}`;
+function fillInfo(result, operation) {
+    let infoElement = document.getElementById('info');
+    let message = `Result: ${result}. `;
+
+    // Verificar si el resultado es menor que 100, entre 100-200, o mayor a 200
+    if (result < 100) {
+        message += "The result is less than 100.";
+    } else if (result >= 100 && result <= 200) {
+        message += "The result is between 100 and 200.";
+    } else if (result > 200) {
+        message += "The result is greater than 200.";
+    }
+
+    // Personalizar mensaje basado en la operación
+    if (operation) {
+        message = `Operation: ${operation}. ` + message;
+    }
+
+    // Actualizar el campo informativo
+    infoElement.textContent = message;
 }
 
 function clearInput() {
@@ -162,8 +180,7 @@ document.getElementById('square').addEventListener('click', () => {
         currentInput = result.toString();
         updateInput();
         updateInformativeField("Operation: Square.");
-        fillInfo(result);
-        
+        fillInfo(result, "Square"); // Actualizar información aquí
     }
 });
 
@@ -177,9 +194,7 @@ document.getElementById('sqrt').addEventListener('click', () => {
         currentInput = result.toString();
         updateInput();
         updateInformativeField("Operation: Square root.");
-        fillInfo(result);
-
-
+        fillInfo(result, "Square root"); // Actualizar información aquí
     }
 });
 
@@ -194,6 +209,7 @@ document.getElementById('factorial').addEventListener('click', () => {
             currentInput = fact(number).toString();
             updateInput();
             updateInformativeField("Operation: Factorial.");
+            fillInfo(parseInt(currentInput), "Factorial"); // Actualizar información aquí
         }
     } else {
         notifyError("Error: Invalid input for factorial.");
@@ -210,6 +226,7 @@ function mod() {
         currentInput = Math.abs(parseFloat(currentInput)).toString();
         updateInput();
         updateInformativeField("Operation: Module.");
+        fillInfo(parseFloat(currentInput), "Module"); // Actualizar información aquí
     }
 }
 
@@ -228,24 +245,6 @@ function handleCSVInput() {
     return 'number';
 }
 
-
-function fillInfo(result) {
-    let infoElement = document.getElementById('info');
-    let message = `Result: ${result}. `;
-
-    // Verificar si el resultado es menor que 100, entre 100-200, o mayor a 200
-    if (result < 100) {
-        message += "The result is less than 100.";
-    } else if (result >= 100 && result <= 200) {
-        message += "The result is between 100 and 200.";
-    } else if (result > 200) {
-        message += "The result is greater than 200.";
-    }
-
-    // Actualizar el campo informativo
-    infoElement.textContent = message;
-}
-
 document.getElementById('power').addEventListener('click', () => {
     if (currentInput) {
         let exponent = prompt("Enter the exponent:");
@@ -254,7 +253,7 @@ document.getElementById('power').addEventListener('click', () => {
             currentInput = result.toString();
             updateInput();
             updateInformativeField("Operation: Power.");
-            fillInfo(result);
+            fillInfo(result, "Power"); // Actualizar información aquí
         } else {
             notifyError("Error: Invalid exponent.");
         }
@@ -265,24 +264,25 @@ document.getElementById('power').addEventListener('click', () => {
 
 document.getElementById('removeSpecific').addEventListener('click', () => {
     if (currentInput.includes(',')) {
-        let valueToRemove = prompt("Enter the number to remove from the CSV:");
+        let valueToRemove = prompt("Enter the number to remove:");
         if (valueToRemove !== null) {
-            let csvValues = currentInput.split(',').map(Number);
-            valueToRemove = parseFloat(valueToRemove);
-            const index = csvValues.indexOf(valueToRemove);
-            if (index !== -1) {
-                csvValues.splice(index, 1); // Eliminar el valor específico
-                currentInput = csvValues.join(', ');
+            let values = currentInput.split(',').map(Number);
+            let indexToRemove = values.indexOf(parseFloat(valueToRemove));
+            if (indexToRemove !== -1) {
+                values.splice(indexToRemove, 1);
+                currentInput = values.join(',');
                 updateInput();
-                updateInformativeField(`Operation: Removed ${valueToRemove} from CSV values.`);
+                updateInformativeField(`Operation: Removed specific value ${valueToRemove} from CSV.`);
+                fillInfo(currentInput.length, "Remove specific"); // Actualizar información aquí
             } else {
                 notifyError("Error: Value not found in CSV.");
             }
         }
     } else {
-        notifyError("Error: No CSV values to process.");
+        notifyError("Error: No CSV input to remove from.");
     }
 });
+
 
 
 let isDarkTheme = false;
