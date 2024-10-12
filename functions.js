@@ -10,7 +10,7 @@ document.addEventListener('keydown', (event) => {
     } else if (event.key === '-' && (currentInput === '' || ['+', '-', 'x', '/'].includes(currentInput.slice(-1)))) {
         appendToInput(event.key);
     } else if (event.key === 'Enter') {
-        calculate();
+        eq();
     }
 });
 
@@ -23,7 +23,7 @@ function updateInput() {
     document.getElementById('input').value = currentInput;
 }
 
-function calculate() {
+function eq() {
     if (operator && firstNumber !== null) {
         let secondNumber = parseFloat(currentInput);
         let result = 0;
@@ -65,7 +65,7 @@ document.getElementById('addition').addEventListener('click', () => setOperator(
 document.getElementById('subtraction').addEventListener('click', () => setOperator('-'));
 document.getElementById('division').addEventListener('click', () => setOperator('/'));
 document.getElementById('multiplication').addEventListener('click', () => setOperator('x'));
-document.getElementById('equal').addEventListener('click', calculate);
+document.getElementById('equal').addEventListener('click', eq);
 document.getElementById('modulo').addEventListener('click', mod);
 
 // Botón para cambiar signo
