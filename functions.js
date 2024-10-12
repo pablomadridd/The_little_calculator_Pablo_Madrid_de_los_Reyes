@@ -24,6 +24,13 @@ function updateInput() {
 }
 
 function eq() {
+
+    if (!validate(currentInput)) {
+        clearCurrentInput();
+        return; // Salir si la entrada es inválida
+    }
+
+
     if (operator && firstNumber !== null) {
         let secondNumber = parseFloat(currentInput);
         let result = 0;
@@ -84,41 +91,44 @@ document.getElementById('removelast').addEventListener('click', () => handleCSVO
 
 // Manejo de CSV y validación de errores
 function handleCSVOperation(operation) {
-    if (handleCSVInput() === 'csv') {
-        let csvValues = currentInput.split(',').map(Number);
-
-        if (csvValues.some(isNaN)) {
-            notifyError("Error: Invalid CSV values.");
-            clearCurrentInput();
-            return;
-        }
-
-        switch (operation) {
-            case 'sum':
-                currentInput = csvValues.reduce((acc, val) => acc + val, 0).toString();
-                updateInformativeField("Operation: Sum of CSV values.");
-                break;
-            case 'sort':
-                csvValues.sort((a, b) => a - b);
-                currentInput = csvValues.join(', ');
-                updateInformativeField("Operation: CSV values sorted.");
-                break;
-            case 'reverse':
-                csvValues.reverse();
-                currentInput = csvValues.join(', ');
-                updateInformativeField("Operation: CSV values reversed.");
-                break;
-            case 'removelast':
-                csvValues.pop();
-                currentInput = csvValues.join(', ');
-                updateInformativeField("Operation: Last CSV value removed.");
-                break;
-        }
-        updateInput();
-    } else {
-        notifyError("Error: Invalid input, CSV values expected.");
+    // Validar la entrada actual para CSV
+    if (!validate(currentInput)) {
+        clearCurrentInput();
+        return; // Salir si la entrada es inválida
     }
+
+    let csvValues = currentInput.split(',').map(Number);
+
+    if (csvValues.some(isNaN)) {
+        notifyError("Error: Invalid CSV values.");
+        clearCurrentInput();
+        return;
+    }
+
+    switch (operation) {
+        case 'sum':
+            currentInput = csvValues.reduce((acc, val) => acc + val, 0).toString();
+            updateInformativeField("Operation: Sum of CSV values.");
+            break;
+        case 'sort':
+            csvValues.sort((a, b) => a - b);
+            currentInput = csvValues.join(', ');
+            updateInformativeField("Operation: CSV values sorted.");
+            break;
+        case 'reverse':
+            csvValues.reverse();
+            currentInput = csvValues.join(', ');
+            updateInformativeField("Operation: CSV values reversed.");
+            break;
+        case 'removelast':
+            csvValues.pop();
+            currentInput = csvValues.join(', ');
+            updateInformativeField("Operation: Last CSV value removed.");
+            break;
+    }
+    updateInput();
 }
+
 
 // Funciones adicionales
 function setOperator(op) {
@@ -281,5 +291,30 @@ document.getElementById('toggleTheme').addEventListener('click', () => {
     document.body.classList.toggle('dark-theme', isDarkTheme);
     isDarkTheme = !isDarkTheme;
 });
+
+
+function validate(input) {
+    // Verificar si la entrada está vacía
+    if (!input) {
+        notifyError("Error: Input cannot be empty.");
+        return false;
+    }
+
+    // Comprobar si es un número (entero o decimal)
+    const numberRegex = /^-?\d+(\.\d+)?$/;
+    if (numberRegex.test(input)) {
+        return true; // Es un número válido
+    }
+
+    // Comprobar si es una lista CSV válida
+    const csvValues = input.split(',').map(val => val.trim());
+    if (csvValues.every(val => numberRegex.test(val))) {
+        return true; // Es un CSV válido
+    }
+
+    // Si no es un número ni un CSV válido
+    notifyError("Error: Invalid input. Please enter a valid number or CSV values.");
+    return false;
+}
 
 
