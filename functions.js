@@ -56,6 +56,7 @@ function calculate() {
         currentInput = result.toString();
         updateInput();
         fillInfo(result);
+
     }
 }
 
@@ -152,6 +153,7 @@ document.getElementById('square').addEventListener('click', () => {
         updateInput();
         updateInformativeField("Operation: Square.");
         fillInfo(result);
+        
     }
 });
 
@@ -166,6 +168,8 @@ document.getElementById('sqrt').addEventListener('click', () => {
         updateInput();
         updateInformativeField("Operation: Square root.");
         fillInfo(result);
+
+
     }
 });
 
@@ -195,7 +199,7 @@ function mod() {
     if (currentInput) {
         currentInput = Math.abs(parseFloat(currentInput)).toString();
         updateInput();
-        updateInformativeField("Operation: Modulo.");
+        updateInformativeField("Operation: Module.");
     }
 }
 
@@ -277,3 +281,5 @@ document.getElementById('toggleTheme').addEventListener('click', () => {
     document.body.classList.toggle('dark-theme', isDarkTheme);
     isDarkTheme = !isDarkTheme;
 });
+
+
