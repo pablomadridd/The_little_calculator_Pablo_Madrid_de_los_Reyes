@@ -300,12 +300,12 @@ document.getElementById('removeSpecific').addEventListener('click', () => {
 
 
 
-let isDarkTheme = false;
+//let isDarkTheme = false;
 
-document.getElementById('toggleTheme').addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme', isDarkTheme);
-    isDarkTheme = !isDarkTheme;
-});
+//document.getElementById('toggleTheme').addEventListener('click', () => {
+    //document.body.classList.toggle('dark-theme', isDarkTheme);
+    //isDarkTheme = !isDarkTheme;
+//});
 
 
 function validate(input) {
