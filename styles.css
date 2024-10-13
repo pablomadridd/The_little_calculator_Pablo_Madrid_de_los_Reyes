@@ -1,4 +1,3 @@
-/* Estilos globales */
 body {
   font-family: "Arial", sans-serif;
   display: flex;
@@ -9,7 +8,6 @@ body {
   margin: 0;
 }
 
-/* Estilos de la calculadora */
 .calculator {
   background-color: #f0f0f0;
   padding: 20px;
@@ -20,17 +18,14 @@ body {
   width: 100%;
   margin: 0 auto;
 
-  /* Efecto 3D */
-  /* Efecto 3D más pronunciado */
-  border: 4px solid #afaeb0; /* Borde oscuro */
+  border: 4px solid #afaeb0; 
   box-shadow: 
-    inset 4px 4px 8px rgba(0, 0, 0, 0.5),  /* Sombra interior más oscura */
-    inset -4px -4px 8px rgba(255, 255, 255, 0.7), /* Luz interior simulada */
-    8px 8px 15px rgba(0, 0, 0, 0.7),  /* Sombra exterior más profunda */
-    -8px -8px 15px rgba(255, 255, 255, 0.6); /* Luz exterior simulada */
+    inset 4px 4px 8px rgba(0, 0, 0, 0.5), 
+    inset -4px -4px 8px rgba(255, 255, 255, 0.7),
+    8px 8px 15px rgba(0, 0, 0, 0.7),  
+    -8px -8px 15px rgba(255, 255, 255, 0.6);
 }
 
-/* Estilos del input */
 input {
   margin-bottom: 15px;
   padding: 15px;
@@ -40,7 +35,7 @@ input {
   border-radius: 10px;
   background-color: #e7e7e7;
   transition: background-color 0.3s;
-  text-align: right; /* Alinea el texto a la derecha */
+  text-align: right; 
   margin: 0 auto;
   border: 4px solid #afaeb0;
 }
@@ -49,7 +44,7 @@ input:focus {
   background-color: #ffffff;
   outline: none;
 }
-/* Contenedor de botones */
+
 .button-container {
   display: flex;
   flex-wrap: wrap;
@@ -76,15 +71,11 @@ button:hover {
   transform: translateY(-3px);
 }
 
-/* Estilo para el texto de resultados */
 #info {
   margin-top: 10px;
   font-size: 1.2em;
   color: #333;
 }
-
-
-
 
 .button-pressed {
   background-color: #4caf50;
@@ -99,7 +90,7 @@ button:hover {
   width: 20px;
   height: 20px;
   animation: spin 2s linear infinite;
-  display: none; /* Oculta el loader por defecto */
+  display: none; 
   margin: auto;
 }
 
@@ -107,7 +98,6 @@ button:hover {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
 
 #toggle-instructions {
   margin-left: 10px;
@@ -137,7 +127,7 @@ button:hover {
 }
 
 .instructions-expanded {
-  max-height: 300px; /* Ajusta según el contenido */
+  max-height: 300px; 
 }
 
 #instructions-panel ul {
@@ -148,3 +138,4 @@ button:hover {
 #instructions-panel ul li {
   margin-bottom: 10px;
 }
+
