@@ -1,12 +1,12 @@
-// Variables globales
+// Global Variables
 let currentInput = '';
 let operator = '';
 let firstNumber = null;
-// Array para almacenar los errores para el log
+
 let errorLog = [];
 
 
-// Manejar entrada de teclado
+// Keyboard 
 document.addEventListener('keydown', (event) => {
     if (!isNaN(event.key) || event.key === '.' || event.key === ',') {
         appendToInput(event.key);
@@ -26,10 +26,16 @@ function updateInput() {
     document.getElementById('input').value = currentInput;
 }
 
+
+
+
+
+// FUNCTION EQ()
+
 function eq() {
     if (!validate(currentInput)) {
         clearCurrentInput();
-        return; // Salir si la entrada es inválida
+        return; 
     }
 
     if (operator && firstNumber !== null) {
@@ -38,7 +44,7 @@ function eq() {
 
         if (operator === '/' && secondNumber === 0) {
             notifyError("Error: Division by zero.");
-            logError("Division by zero");  // Agregamos el log de errores
+            logError("Division by zero");  
             clearCurrentInput();
             return;
         }
@@ -64,11 +70,11 @@ function eq() {
 
         currentInput = result.toString();
         updateInput();
-        fillInfo(result, operator); // Actualizar información aquí
+        fillInfo(result, operator); 
     }
 }
 
-// Botones de operaciones
+
 document.getElementById('addition').addEventListener('click', () => setOperator('+'));
 document.getElementById('subtraction').addEventListener('click', () => setOperator('-'));
 document.getElementById('division').addEventListener('click', () => setOperator('/'));
@@ -76,7 +82,7 @@ document.getElementById('multiplication').addEventListener('click', () => setOpe
 document.getElementById('equal').addEventListener('click', eq);
 document.getElementById('modulo').addEventListener('click', mod);
 
-// Botón para cambiar signo
+
 document.getElementById('sign').addEventListener('click', () => {
     if (currentInput) {
         currentInput = (-parseFloat(currentInput)).toString();
@@ -84,19 +90,20 @@ document.getElementById('sign').addEventListener('click', () => {
     }
 });
 
-// Operaciones CSV
+
 document.getElementById('sum').addEventListener('click', () => handleCSVOperation('sum'));
 document.getElementById('sort').addEventListener('click', () => handleCSVOperation('sort'));
 document.getElementById('reverse').addEventListener('click', () => handleCSVOperation('reverse'));
 document.getElementById('removelast').addEventListener('click', () => handleCSVOperation('removelast'));
 document.getElementById('average').addEventListener('click', () => handleCSVOperation('average'));
 
-// Manejo de CSV y validación de errores
+// CSV CALCULATIONS
+
 function handleCSVOperation(operation) {
-    // Validar la entrada actual para CSV
+    
     if (!validate(currentInput)) {
         clearCurrentInput();
-        return; // Salir si la entrada es inválida
+        return; 
     }
 
     let csvValues = currentInput.split(',').map(Number);
@@ -111,25 +118,25 @@ function handleCSVOperation(operation) {
         case 'sum':
             currentInput = csvValues.reduce((acc, val) => acc + val, 0).toString();
             updateInformativeField("Operation: Sum of CSV values.");
-            fillInfo(parseFloat(currentInput), operation); // Actualizar información aquí
+            fillInfo(parseFloat(currentInput), operation); 
             break;
         case 'sort':
             csvValues.sort((a, b) => a - b);
             currentInput = csvValues.join(', ');
             updateInformativeField("Operation: CSV values sorted.");
-            fillInfo(currentInput.length, operation); // Puedes ajustar esto si quieres otro tipo de resultado
+            fillInfo(currentInput.length, operation); 
             break;
         case 'reverse':
             csvValues.reverse();
             currentInput = csvValues.join(', ');
             updateInformativeField("Operation: CSV values reversed.");
-            fillInfo(currentInput.length, operation); // Puedes ajustar esto si quieres otro tipo de resultado
+            fillInfo(currentInput.length, operation); 
             break;
         case 'removelast':
             csvValues.pop();
             currentInput = csvValues.join(', ');
             updateInformativeField("Operation: Last CSV value removed.");
-            fillInfo(currentInput.length, operation); // Puedes ajustar esto si quieres otro tipo de resultado
+            fillInfo(currentInput.length, operation); 
             break;
         case 'average':
             let average = csvValues.reduce((acc, val) => acc + val, 0) / csvValues.length;
@@ -142,7 +149,7 @@ function handleCSVOperation(operation) {
     updateInput();
 }
 
-// Funciones adicionales
+
 function setOperator(op) {
     firstNumber = parseFloat(currentInput);
     operator = op;
@@ -150,11 +157,14 @@ function setOperator(op) {
     updateInput();
 }
 
+
+// FILL INFO FUNCTION
+
 function fillInfo(result, operation) {
     let infoElement = document.getElementById('info');
     let message = `Result: ${result}. `;
 
-    // Verificar si el resultado es menor que 100, entre 100-200, o mayor a 200
+    
     if (result < 100) {
         message += "The result is less than 100.";
     } else if (result >= 100 && result <= 200) {
@@ -163,12 +173,12 @@ function fillInfo(result, operation) {
         message += "The result is greater than 200.";
     }
 
-    // Personalizar mensaje basado en la operación
+    
     if (operation) {
         message = `Operation: ${operation}. ` + message;
     }
 
-    // Actualizar el campo informativo
+   
     infoElement.textContent = message;
 }
 
@@ -185,14 +195,14 @@ function clearCurrentInput() {
 
 document.getElementById('clear').addEventListener('click', clearInput);
 
-// Operaciones unarias
+
 document.getElementById('square').addEventListener('click', () => {
     if (currentInput) {
         let result = Math.pow(parseFloat(currentInput), 2);
         currentInput = result.toString();
         updateInput();
         updateInformativeField("Operation: Square.");
-        fillInfo(result, "Square"); // Actualizar información aquí
+        fillInfo(result, "Square"); 
     }
 });
 
@@ -200,14 +210,14 @@ document.getElementById('sqrt').addEventListener('click', () => {
     if (currentInput) {
         if (parseFloat(currentInput) < 0) {
             notifyError("Error: Square root of a negative number is not real.");
-            logError("Square root of negative number");  // Agregamos el log de errore
+            logError("Square root of negative number");  
             return;
         }
         let result = Math.sqrt(parseFloat(currentInput));
         currentInput = result.toString();
         updateInput();
         updateInformativeField("Operation: Square root.");
-        fillInfo(result, "Square root"); // Actualizar información aquí
+        fillInfo(result, "Square root"); 
     }
 });
 
@@ -216,15 +226,15 @@ document.getElementById('factorial').addEventListener('click', () => {
         let number = parseInt(currentInput);
         if (number < 0) {
             notifyError("Error: Factorial of a negative number is not possible.");
-            logError("Factorial of negative number");  // Agregamos el log de errores
+            logError("Factorial of negative number");  
         } else if (number > 170) {
             notifyError("Error: Number too large for factorial.");
-            logError("Factorial too large");  // Agregamos el log de errores
+            logError("Factorial too large");  
         } else {
             currentInput = fact(number).toString();
             updateInput();
             updateInformativeField("Operation: Factorial.");
-            fillInfo(parseInt(currentInput), "Factorial"); // Actualizar información aquí
+            fillInfo(parseInt(currentInput), "Factorial"); 
         }
     } else {
         notifyError("Error: Invalid input for factorial.");
@@ -241,11 +251,11 @@ function mod() {
         currentInput = Math.abs(parseFloat(currentInput)).toString();
         updateInput();
         updateInformativeField("Operation: Module.");
-        fillInfo(parseFloat(currentInput), "Module"); // Actualizar información aquí
+        fillInfo(parseFloat(currentInput), "Module"); 
     }
 }
 
-// Manejo de errores
+
 function notifyError(errorMessage) {
     alert(errorMessage);
     document.getElementById('info').textContent = errorMessage;
@@ -268,7 +278,7 @@ document.getElementById('power').addEventListener('click', () => {
             currentInput = result.toString();
             updateInput();
             updateInformativeField("Operation: Power.");
-            fillInfo(result, "Power"); // Actualizar información aquí
+            fillInfo(result, "Power"); 
         } else {
             notifyError("Error: Invalid exponent.");
         }
@@ -288,7 +298,7 @@ document.getElementById('removeSpecific').addEventListener('click', () => {
                 currentInput = values.join(',');
                 updateInput();
                 updateInformativeField(`Operation: Removed specific value ${valueToRemove} from CSV.`);
-                fillInfo(currentInput.length, "Remove specific"); // Actualizar información aquí
+                fillInfo(currentInput.length, "Remove specific");
             } else {
                 notifyError("Error: Value not found in CSV.");
             }
@@ -300,16 +310,12 @@ document.getElementById('removeSpecific').addEventListener('click', () => {
 
 
 
-//let isDarkTheme = false;
 
-//document.getElementById('toggleTheme').addEventListener('click', () => {
-    //document.body.classList.toggle('dark-theme', isDarkTheme);
-    //isDarkTheme = !isDarkTheme;
-//});
 
+// VALIDATE FUNCTION
 
 function validate(input) {
-    // Verificar si la entrada está vacía
+    
     if (!input) {
         const errorMessage = "Error: Input cannot be empty.";
         notifyError(errorMessage);
@@ -317,19 +323,19 @@ function validate(input) {
         return false;
     }
 
-    // Comprobar si es un número (entero o decimal)
+    
     const numberRegex = /^-?\d+(\.\d+)?$/;
     if (numberRegex.test(input)) {
-        return true; // Es un número válido
+        return true; 
     }
 
-    // Comprobar si es una lista CSV válida
+    
     const csvValues = input.split(',').map(val => val.trim());
     if (csvValues.every(val => numberRegex.test(val))) {
-        return true; // Es un CSV válido
+        return true; 
     }
 
-    // Si no es un número ni un CSV válido
+    
     const errorMessage = "Error: Invalid input. Please enter a valid number or CSV values.";
     notifyError(errorMessage);
     logError(errorMessage);
@@ -337,20 +343,20 @@ function validate(input) {
 }
 
 
-// Función para notificar el error en el campo de información y mostrar un alert
+
 function notifyError(errorMessage) {
     alert(errorMessage);
     document.getElementById('info').textContent = errorMessage;
-    logError(errorMessage);  // Agregamos el log de errores aquí
+    logError(errorMessage); 
 }
 
-// Función para registrar los errores
+
 function logError(error) {
     const timestamp = new Date().toISOString();
     errorLog.push({ error, timestamp });
 }
 
-// Función para generar el archivo CSV de los errores
+
 function downloadErrorLog() {
     if (errorLog.length === 0) {
         alert("No errors logged.");
@@ -366,12 +372,12 @@ function downloadErrorLog() {
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
     link.setAttribute('download', 'error_log.csv');
-    document.body.appendChild(link); // Required for Firefox
+    document.body.appendChild(link); 
     link.click();
     document.body.removeChild(link);
 }
 
-// Agregar evento para el botón de descarga del log
+
 document.getElementById('downloadLog').addEventListener('click', downloadErrorLog);
 
 
@@ -389,3 +395,5 @@ toggleButton.addEventListener('click', function() {
         toggleButton.textContent = 'Show Instructions';
     }
 });
+
+
