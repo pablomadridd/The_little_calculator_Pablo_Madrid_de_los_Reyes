@@ -373,3 +373,19 @@ function downloadErrorLog() {
 
 // Agregar evento para el botón de descarga del log
 document.getElementById('downloadLog').addEventListener('click', downloadErrorLog);
+
+
+const toggleButton = document.getElementById('toggle-instructions');
+const instructionsPanel = document.getElementById('instructions-panel');
+
+toggleButton.addEventListener('click', function() {
+    if (instructionsPanel.classList.contains('instructions-collapsed')) {
+        instructionsPanel.classList.remove('instructions-collapsed');
+        instructionsPanel.classList.add('instructions-expanded');
+        toggleButton.textContent = 'Hide Instructions';
+    } else {
+        instructionsPanel.classList.remove('instructions-expanded');
+        instructionsPanel.classList.add('instructions-collapsed');
+        toggleButton.textContent = 'Show Instructions';
+    }
+});

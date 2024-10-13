@@ -48,6 +48,27 @@
         <button id="toggleTheme" aria-label="Toggle theme">🌙</button>
       </div>
       <button id="clear" aria-label="Clear memory and history">Clear</button>
+      <div class="calculator-container">
+        <!-- Aquí iría el código de tu calculadora -->
+    </div>
+    
+    <!-- Botón para mostrar/ocultar instrucciones -->
+    <button id="toggle-instructions">Show Instructions</button>
+    
+    <!-- Panel de instrucciones -->
+    <div id="instructions-panel" class="instructions-collapsed">
+        <h3>Instructions</h3>
+        <ul>
+            <li><b>Download Error Log:</b> Downloads a log of errors encountered during operations.</li>
+            <li><b>Clear Button:</b> Clears the most recent input. For clearing all data, tap the calculator's screen.</li>
+            <li><b>Screen Color:</b> 
+                <ul>
+                    <li>White screen: No stored history.</li>
+                    <li>Gray screen: History is saved.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
     </div>
     <script src="functions.js"></script>
   </body>
